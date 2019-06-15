@@ -11,9 +11,6 @@ main.o: main.c
 caracteres.o: caracteres.c 
 	$(CC) $(CFLAGS) caracteres.c
 
-naves.o: naves.c naves.h
-	$(CC) $(CFLAGS) naves.c
-
 vectores_dinamicos.o: vectores_dinamicos.c
 	$(CC) $(CFLAGS) vectores_dinamicos.c
 
@@ -29,8 +26,8 @@ dibujo_en_juego.o: dibujo_en_juego.c
 diccionario.o: diccionario.c
 	$(CC) $(CFLAGS) diccionario.c
 
-programa: main.o caracteres.o naves.o vectores_dinamicos.o generador_terreno.o fisica_del_juego.o diccionario.o dibujo_en_juego.o
-	$(CC) main.o caracteres.o naves.o vectores_dinamicos.o generador_terreno.o fisica_del_juego.o diccionario.o dibujo_en_juego.o -o programa $(LFLAGS)
+programa: main.o caracteres.o vectores_dinamicos.o generador_terreno.o fisica_del_juego.o diccionario.o dibujo_en_juego.o
+	$(CC) main.o caracteres.o vectores_dinamicos.o generador_terreno.o fisica_del_juego.o diccionario.o dibujo_en_juego.o -o programa $(LFLAGS)
 
 clean:
 	rm *.o
