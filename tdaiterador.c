@@ -1,6 +1,6 @@
-#include<stdlib.h>
-#include<stdbool.h>
-#include"iterador.h"
+#include <stdlib.h>
+#include <stdbool.h>
+#include "tdaiterador.h"
 
 typedef struct nodo{
 
@@ -8,7 +8,7 @@ typedef struct nodo{
   struct nodo *sig;
 }nodo_t;
 
-typedef struct lista {
+typedef struct lista{
 
   nodo_t *prim;
 }lista_t;
@@ -35,7 +35,7 @@ iterador_t *lista_iterador_crear(lista_t *l){
   return li;
 }
 
-void lista_iterador_destruir(iterador_t *li) {
+void lista_iterador_destruir(iterador_t *li){
 
   free(li);
 }
