@@ -15,7 +15,7 @@ x , y de la pantalla (tomando como (0, 0) la esquina inferior izquierda). */
 void graficador_ajustar_variables(float *x, float *y);
 
 /* Recibe dos variables x e y y las ajusta dentro del ancho y alto de la pantalla */
-bool graficador_dibujar(const char *nombre, float escala, float x, float y, float angulo);
+bool graficador_dibujar(const char *nombre, float escala, float x, float y, double angulo);
 
 
 #endif // _GRAFICADOR_H_

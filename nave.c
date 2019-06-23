@@ -13,7 +13,7 @@ struct mi_nave {
   float py;
   float vx;
   float vy;
-  float angulo;
+  double angulo;
   float potencia;
   float escala;
 };
@@ -53,14 +53,23 @@ void nave_rotar_izquierda(nave_t *nave) {
   nave->angulo += NAVE_ROTACION_PASO;
 }
 
+void velocidad_decrementar(nave_t *nave, float dt) {
+  nave->vx -= nave->vx * dt;
+  nave->vy -= nave->vy * dt;  
+}
+
 void nave_mover(nave_t *nave, float dt) {
   if (nave->potencia > 0)
-    nave->potencia -= 10;
+    nave->potencia -= 100;
 
-  nave->vx = computar_velocidad(nave->vx, -nave->potencia * sin(nave->angulo), dt);
-  nave->vy = computar_velocidad(nave->vy, -nave->potencia * cos(nave->angulo), dt);
+  nave->vx = computar_velocidad(nave->vx, nave->potencia * sin(nave->angulo), dt);
+  nave->vy = computar_velocidad(nave->vy, nave->potencia * cos(nave->angulo), dt);
   nave->px = computar_posicion(nave->px, nave->vx, dt);
   nave->py = computar_posicion(nave->py, nave->vy, dt);
+  
+  velocidad_decrementar(nave, dt);
+  
+  graficador_ajustar_variables(&nave->px, &nave->py);
 }
 
 bool nave_dibujar(const nave_t *nave) {

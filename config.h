@@ -7,7 +7,7 @@
 #define VENTANA_ALTO 800
 
 #define JUEGO_FPS 100
-#define DT (1 / JUEGO_FPS)
+#define DT 0.01
 
 #define DISPARO_VELOCIDAD 1000
 #define DISPARO_VIDA (DT * 7)
@@ -18,7 +18,7 @@
 #define NAVE_Y_INICIAL (VENTANA_ALTO / 2)
 #define NAVE_VX_INICIAL 0
 #define NAVE_VY_INICIAL 0
-#define NAVE_ANGULO_INICIAL 0
+#define NAVE_ANGULO_INICIAL PI / 2
 
 #define NAVE_POTENCIA_PASO 1000
 

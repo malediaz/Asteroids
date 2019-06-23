@@ -10,6 +10,7 @@
 #include "lista.h"
 #include "iterador.h"
 #include "graficador.h"
+#include "movimiento.h"
 
 #define BLOQUE 20
 #define LONGCADENA 10
@@ -27,41 +28,35 @@ typedef struct sprite {
 
 
 bool graficador_inicializar(const char *fn, SDL_Renderer *r) {
-
   FILE *binario;
-
-  if ((binario = fopen(fn, "rb")) == NULL){
-
-    fclose(binario);
+  if ((binario = fopen(fn, "rb")) == NULL){ 
     return false;
   }
 
   l = lista_crear();
 
   while (1) {
-
     sprites_t *sprites = malloc(sizeof(sprites_t));
-
     if(sprites == NULL){
-
       fclose(binario);
+      
       return false;
     }
 
-    if(fread(&sprites->nombre, sizeof(char) * LONGCADENA, 1, binario) != 1)
+    if(fread(&sprites->nombre, sizeof(char) * LONGCADENA, 1, binario) != 1) 
       break;
 
     if(fread(&sprites->n, sizeof(uint16_t), 1, binario) != 1){
-
       fclose(binario);
+      
       return false;
     }
 
     sprites->coords = malloc(sprites->n * sizeof(float *));
 
     if(sprites->coords == NULL){
-
       fclose(binario);
+      
       return false;
     }
 
@@ -69,15 +64,17 @@ bool graficador_inicializar(const char *fn, SDL_Renderer *r) {
       sprites->coords[i] = malloc(2 * sizeof(float));
 
       if(sprites->coords[i] == NULL){
-
         for(size_t j = 0; j < i; j++)
           free(sprites->coords[j]);
+          
         free(sprites->coords);
+        
         return false;
       }
+      
       if(fread(sprites->coords[i], sizeof(float), 2, binario) != 2){
-
         fclose(binario);
+        
         return false;
       }
     }
@@ -92,7 +89,6 @@ bool graficador_inicializar(const char *fn, SDL_Renderer *r) {
 }
 
 void graficador_finalizar() {
-
   lista_destruir(l, NULL);
 }
 
@@ -110,26 +106,27 @@ void graficador_ajustar_variables(float *x, float *y) {
     *y = 0;
 }
 
-bool graficador_dibujar(const char *nombre, float escala, float x, float y, float angulo) {
-
-  graficador_ajustar_variables(&x, &y);
-
+bool graficador_dibujar(const char *nombre, float escala, float x, float y, double angulo) {  
   iterador_t *li = iterador_crear(l);
 
   for (; !iterador_termino(li); iterador_siguiente(li)) {
-
     sprites_t *dato = iterador_actual(li);
-
+    
     if (strcmp(nombre, dato->nombre) == 0) {
-
+      vector_rotar(dato->coords, dato->n, angulo - NAVE_ANGULO_INICIAL);
+      vector_trasladar(dato->coords, dato->n, x, -y);
+      
       for(size_t i = 1; i < dato->n; i++)
         SDL_RenderDrawLine(
           graficador,
-          (dato->coords[i - 1][0] * escala) + x,
-         -(dato->coords[i - 1][1] * escala) + y,
-          (dato->coords[i][0] * escala) + x,
-         -(dato->coords[i][1] * escala) + y
+          (dato->coords[i - 1][0] * escala),
+         -(dato->coords[i - 1][1] * escala),
+          (dato->coords[i][0] * escala),
+         -(dato->coords[i][1] * escala)
       );
+      
+      vector_trasladar(dato->coords, dato->n, -x, y);
+      vector_rotar(dato->coords, dato->n, -angulo + NAVE_ANGULO_INICIAL);
 
       iterador_destruir(li);
 

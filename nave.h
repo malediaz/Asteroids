@@ -19,6 +19,8 @@ void nave_rotar_derecha(nave_t *nave);
 /* Rota la nave hacia la izquierda */
 void nave_rotar_izquierda(nave_t *nave);
 
+void velocidad_decrementar(nave_t *nave, float dt);
+
 /* Le avisa al la nave que pasó un instante dt de tiempo y que debe actualizar su posición
   y su estado */
 void nave_mover(nave_t *nave, float dt);

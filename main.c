@@ -21,6 +21,7 @@ int main() {
 	// BEGIN código de Male y Agus
 
   nave_t *nave = nave_crear();
+  nave_inicializar(nave);
 
   if(!graficador_inicializar("sprites.bin", renderer))
 		return EXIT_FAILURE;
@@ -39,19 +40,21 @@ int main() {
         switch(event.key.keysym.sym) {
 					case SDLK_UP:
             nave_potencia_incrementar(nave);
-
-						break;
+            
 					case SDLK_SPACE:
-
             // Disparamos
-
-					case SDLK_RIGHT:
-            nave_rotar_derecha(nave);
+            
+            break;
 
 					case SDLK_LEFT:
             nave_rotar_izquierda(nave);
+            
+            break;
+          
+					case SDLK_RIGHT:
+            nave_rotar_derecha(nave);
 
-						break;
+            break;
 				}
 				// END código de Male y Agus
 
@@ -66,8 +69,9 @@ int main() {
 
 		// BEGIN código de Male y Agus
 
-		nave_inicializar(nave);
-		if(!nave_dibujar(nave))
+		nave_mover(nave, DT);
+		
+    if(!nave_dibujar(nave))
 			return EXIT_FAILURE;
 
 
@@ -86,7 +90,9 @@ int main() {
 	}
 
 	// BEGIN código de Male y Agus
-
+  
+  nave_destruir(nave);
+  
 	// Damos la información del puntaje obtenido por stdout
   //printf("\nGAME OVER\n\nSCORE: %0.f\n\n", score);
 
