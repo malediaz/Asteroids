@@ -1,34 +1,42 @@
 CC := gcc
 CFLAGS := -Wall -c -pedantic -std=c99 -g -O3
-LFLAGS := -lm -lSDL2
+LFLAGS := -lm
 INSTALL_DIR := /usr/sbin # Voy a tener que ser admin para instalar ahi
 
 all: programa
 
-main.o: main.c
+main.o: main.c config.h nave.h graficador.h
 	$(CC) $(CFLAGS) $(LFLAGS) main.c
 
-caracteres.o: caracteres.c 
+nave.o: nave.c nave.h config.h movimiento.h graficador.h
+	$(CC) $(CFLAGS) nave.c
+
+movimiento.o: movimiento.c movimiento.h config.h
+	$(CC) $(CFLAGS) movimiento.c $(LFLAGS) 
+
+iterador.o: iterador.c iterador.h lista.h
+	$(CC) $(CFLAGS) iterador.c
+
+graficador.o: graficador.c graficador.h config.h diccionario.h lista.h iterador.h
+	$(CC) $(CFLAGS) graficador.c
+
+caracteres.o: caracteres.c caracteres.h
 	$(CC) $(CFLAGS) caracteres.c
 
-vectores_dinamicos.o: vectores_dinamicos.c
-	$(CC) $(CFLAGS) vectores_dinamicos.c
+lista.o: lista.c lista.h
+	$(CC) $(CFLAGS) lista.c
+	
+dibujar.o: dibujar.c dibujar.h config.h movimiento.h vector.h
+	$(CC) $(CFLAGS) dibujar.c
 
-generador_terreno.o: generador_terreno.c
-	$(CC) $(CFLAGS) generador_terreno.c
-
-fisica_del_juego.o: fisica_del_juego.c 
-	$(CC) $(CFLAGS) fisica_del_juego.c
-
-dibujo_en_juego.o: dibujo_en_juego.c 
-	$(CC) $(CFLAGS) dibujo_en_juego.c
-
-diccionario.o: diccionario.c
+diccionario.o: diccionario.c diccionario.h caracteres.h
 	$(CC) $(CFLAGS) diccionario.c
 
-programa: main.o caracteres.o vectores_dinamicos.o generador_terreno.o fisica_del_juego.o diccionario.o dibujo_en_juego.o
-	$(CC) main.o caracteres.o vectores_dinamicos.o generador_terreno.o fisica_del_juego.o diccionario.o dibujo_en_juego.o -o programa $(LFLAGS)
+vector.o: vector.c vector.h
+	$(CC) $(CFLAGS) vector.c
+
+programa: main.o graficador.o caracteres.o nave.o movimiento.o lista.o dibujar.o diccionario.o vector.o iterador.o
+	$(CC) main.o graficador.o caracteres.o nave.o movimiento.o lista.o dibujar.o diccionario.o vector.o iterador.o -o Asteroids -lSDL2 $(LFLAGS) 
 
 clean:
 	rm *.o
-

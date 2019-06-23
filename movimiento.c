@@ -5,9 +5,6 @@
 
 #include "config.h"
 #include "movimiento.h"
-#include "terreno.h"
-
-#define DT (1.0 / JUEGO_FPS)
 
 
 double computar_velocidad(double vi ,double a ,double dt) {

@@ -1,7 +1,10 @@
 #include <SDL2/SDL.h>
-
+#include <stdio.h>
+#include <stdbool.h>
 #include "config.h"
-#include "naves.h"
+#include "nave.h"
+#include "graficador.h"
+
 
 int main() {
 	SDL_Init(SDL_INIT_VIDEO);
@@ -15,13 +18,14 @@ int main() {
 
 	int dormir = 0;
 
-	// BEGIN código del alumno
+	// BEGIN código de Male y Agus
 
-	// El chorro de la nave:
+  nave_t *nave = nave_crear();
 
-	// Queremos que todo se dibuje escalado por f:
-	float f = 10;
-	// END código del alumno
+  if(!graficador_inicializar("sprites.bin", renderer))
+		return EXIT_FAILURE;
+
+	// END código de Male y Agus
 
 	unsigned int ticks = SDL_GetTicks();
 	while(1) {
@@ -29,20 +33,27 @@ int main() {
 			if (event.type == SDL_QUIT)
 				break;
 	    		if (event.type == SDL_KEYDOWN) {
-				// BEGIN código del alumno
-				switch(event.key.keysym.sym) {
+
+				// BEGIN código de Male y Agus
+
+        switch(event.key.keysym.sym) {
 					case SDLK_UP:
-						
+            nave_potencia_incrementar(nave);
+
 						break;
-					case SDLK_DOWN:
-						
+					case SDLK_SPACE:
+
+            // Disparamos
+
 					case SDLK_RIGHT:
-          
+            nave_rotar_derecha(nave);
+
 					case SDLK_LEFT:
-          
+            nave_rotar_izquierda(nave);
+
 						break;
 				}
-				// END código del alumno
+				// END código de Male y Agus
 
 
 			}
@@ -53,13 +64,17 @@ int main() {
         	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0x00);
 
 
-		// BEGIN código del alumno
+		// BEGIN código de Male y Agus
+
+		nave_inicializar(nave);
+		if(!nave_dibujar(nave))
+			return EXIT_FAILURE;
 
 
-		// END código del alumno
+		// END código de Male y Agus
 
 
-        	SDL_RenderPresent(renderer);
+    SDL_RenderPresent(renderer);
 		ticks = SDL_GetTicks() - ticks;
 		if(dormir) {
 			SDL_Delay(dormir);
@@ -70,9 +85,12 @@ int main() {
 		ticks = SDL_GetTicks();
 	}
 
-	// BEGIN código del alumno
-	// No tengo nada que destruir.
-	// END código del alumno
+	// BEGIN código de Male y Agus
+
+	// Damos la información del puntaje obtenido por stdout
+  //printf("\nGAME OVER\n\nSCORE: %0.f\n\n", score);
+
+	// END código de Male y Agus
 
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
@@ -80,4 +98,3 @@ int main() {
 	SDL_Quit();
 	return 0;
 }
-

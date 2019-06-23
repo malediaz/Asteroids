@@ -1,21 +1,19 @@
 #ifndef _DICCIONARIO_H_
 #define _DICCIONARIO_H_
 
-#include"diccionario.h"
-#include"caracteres.h"
-#include<stdio.h>
-#include<stdlib.h>
+typedef const int (*vectores_t)[2];
 
-/*Voy a definir darle el nombre matrizc_t del siguiente tipo para que resulte
-mas facil su implementacion*/
-typedef const int (*matrizc_t)[2];
+char opciones_caracteres[42];
+size_t longitud_cadena[42];
+size_t cantidad_caracteres;
 
-/*Esta funcion recibe un caracter y devuelve la matriz relacionada a este, 
-la cual es una representacion del caracter*/
-matrizc_t caracter_a_matriz(char c);
+/* Recibe un caracter y devuelve la el vector de coordenadas
+  que lo representa */
+vectores_t conversion_a_vector(char caracter);
 
-/*La siguiente funcion devuelve la cantidad de filas que tiene la matriz
-relacionada al caracter ingresado*/
-size_t caracter_a_tamagno(char c);
+/* Recibe un caracter y devuelve el numero de coordenadas
+  que contiene el vector que lo representa */
+size_t conversion_a_longitud(char caracter);
 
-#endif // _DICCIONARIO_H
+
+#endif // _DICCIONARIO_H_

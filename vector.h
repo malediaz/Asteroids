@@ -25,8 +25,7 @@ float **vector_desde_matriz(const float m[][2], size_t n);
    en forma creciente con respecto a sus coordenadas en x */
 void vector_ordenar(float **v, size_t nn);
 
-/* Recibe una cadena de caracteres y su longitud y e invierte el orden
-
+/* Recibe una cadena de caracteres y su longitud y e invierte el orden*/
 
 
 #endif // _VECTOR_H_

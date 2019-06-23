@@ -2,8 +2,6 @@
 #define _MOVIMIENTO_H_
 
 
-#define DT (1.0 / JUEGO_FPS)
-
 /* Dada la velocidad actual vi, la aceleración a y el paso temporal dt 
   devuelve la velocidad del próximo instante */
 double computar_velocidad(double vi ,double a ,double dt);

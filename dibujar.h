@@ -12,13 +12,13 @@
 #define MSJ_ALTO 20
 
 
-/* Dado ua cadena, con su posicion inicial y su escala,
+/* Dado una cadena, con su posicion inicial y su escala,
   se imprimen los caracteres correspondientes en pantalla, a partir de un margen superior 
   fijo para la impresión de los caracteres */
 void dibujar_cadena(char *cadena, float escala, SDL_Renderer *renderer, int posicion_x, int posicion_y);
 
 /* Dado un valor, con su posicion inicial y su escala,
-   y se imprimen los caracteres correspondientes en pantalla, a partir de un margen
+ y se imprimen los caracteres correspondientes en pantalla, a partir de un margen
    superior fijo */
 void valores_dibujar(float valor, float escala, SDL_Renderer *renderer, int posicion_x, int posicion_y);
 
