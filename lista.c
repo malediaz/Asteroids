@@ -79,3 +79,8 @@ void lista_destruir(lista_t *l, void (*destruir_dato)(void *d)) {
   free(l);
 }
 
+bool lista_es_vacia(const lista_t *l) {
+  return l->prim == NULL;  
+}
+
+

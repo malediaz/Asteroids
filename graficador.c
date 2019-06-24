@@ -119,10 +119,10 @@ bool graficador_dibujar(const char *nombre, float escala, float x, float y, doub
       for(size_t i = 1; i < dato->n; i++)
         SDL_RenderDrawLine(
           graficador,
-          (dato->coords[i - 1][0] * escala),
-         -(dato->coords[i - 1][1] * escala),
-          (dato->coords[i][0] * escala),
-         -(dato->coords[i][1] * escala)
+          dato->coords[i - 1][0] * escala,
+         -dato->coords[i - 1][1] * escala,
+          dato->coords[i][0] * escala,
+         -dato->coords[i][1] * escala
       );
       
       vector_trasladar(dato->coords, dato->n, -x, y);

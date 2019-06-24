@@ -71,12 +71,8 @@ void *iterador_eliminar(iterador_t *li){
   if (li->n == NULL)
    return NULL;
 
-  if (li->ant == NULL) {
-
-    li->n = li->n->sig;
-    lista_extraer_primero(li->l);
-
-  }
+  if (li->ant == NULL)
+    return lista_extraer_primero(li->l);
 
   void *dato = li->n->dato;
   nodo_t *aux = li->n->sig;

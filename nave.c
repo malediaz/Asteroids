@@ -11,8 +11,8 @@
 struct mi_nave {
   float px;
   float py;
-  float vx;
-  float vy;
+  double vx;
+  double vy;
   double angulo;
   float potencia;
   float escala;
@@ -53,14 +53,26 @@ void nave_rotar_izquierda(nave_t *nave) {
   nave->angulo += NAVE_ROTACION_PASO;
 }
 
-void velocidad_decrementar(nave_t *nave, float dt) {
+static void velocidad_decrementar(nave_t *nave, float dt) {
   nave->vx -= nave->vx * dt;
   nave->vy -= nave->vy * dt;  
 }
 
+double nave_angulo(nave_t *nave) {
+  return nave->angulo;
+}
+
+float nave_px(nave_t *nave) {
+  return nave->px;
+}
+
+float nave_py(nave_t *nave) {
+  return nave->py;
+}
+
 void nave_mover(nave_t *nave, float dt) {
   if (nave->potencia > 0)
-    nave->potencia -= 100;
+    nave->potencia -= nave->potencia * 0.1;
 
   nave->vx = computar_velocidad(nave->vx, nave->potencia * sin(nave->angulo), dt);
   nave->vy = computar_velocidad(nave->vy, nave->potencia * cos(nave->angulo), dt);
@@ -73,8 +85,13 @@ void nave_mover(nave_t *nave, float dt) {
 }
 
 bool nave_dibujar(const nave_t *nave) {
-  if (graficador_dibujar("SHIP", nave->escala, nave->px, nave->py, nave->angulo))
-    return true;
-
-  return false;
+  if (!graficador_dibujar("SHIP", nave->escala, nave->px, nave->py, nave->angulo))
+    return false;
+    
+  if (nave->potencia > 1) {
+    if (!graficador_dibujar("THURST", nave->escala, nave->px, nave->py, nave->angulo))
+      return false;
+  }
+  
+  return true;
 }

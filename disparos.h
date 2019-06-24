@@ -1,14 +1,23 @@
 #ifndef _DISPAROS_H_
 #define _DISPAROS_H_
 
-typedef struct balas bala_t;
 typedef struct disparos disparos_t;
+
+disparos_t *disparos_crear();
+
+bool disparo_insertar(disparos_t *disparo, float px, float py, double angulo);
 
 /* Le avisa al la nave que pasó un instante dt de tiempo y que debe actualizar su posición
   y su estado */
-void disparo_mover(disparos_t *disparo, float dt);
+bool disparo_mover(disparos_t *disparo, float dt);
 
-/* Le pide al la nave que se dibuje sobre la pantalla */
-bool disparo_dibujar(const bala_t *bala);
+/* Retorna true si hay disparos y false en caso contrario */
+bool disparos_es_vacia(disparos_t *disparo);
 
-#endif // _NAVE_H_
+/* Grafica los disparos en pantalla */
+bool disparos_graficar(disparos_t *disparo);
+
+/* Destrue los disparos creados */
+void disparos_destruir(disparos_t *disparo);
+
+#endif // _DISPAROS_H_
