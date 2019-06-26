@@ -1,5 +1,5 @@
 CC := gcc
-CFLAGS := -Wall -c -pedantic -std=c99 -g -O3
+CFLAGS := -Wall -c -pedantic -std=c99 -g -O0
 LFLAGS := -lm
 INSTALL_DIR := /usr/sbin # Voy a tener que ser admin para instalar ahi
 

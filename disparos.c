@@ -37,8 +37,8 @@ bala_t *bala_crear() {
 static void bala_inicializar(bala_t *bala, float px, float py, double angulo) {
   bala->px = px;
   bala->py = py;
-  bala->vx = DISPARO_VELOCIDAD * sin(angulo);
-  bala->vy = DISPARO_VELOCIDAD * cos(angulo);
+  bala->vx = DISPARO_VELOCIDAD * cos(angulo);
+  bala->vy = -DISPARO_VELOCIDAD * sin(angulo);
   bala->angulo = angulo;
   bala->escala = 1;
   bala->vida = 0;

@@ -14,7 +14,7 @@ void vector_destruir(float **v ,size_t n ,size_t m) {
   v = NULL;                                    
 }
 
-
+/*
 float **vector_asignar_memoria(size_t n, size_t m) {
   float **v = malloc(sizeof(float *) * n);
 
@@ -48,7 +48,7 @@ float **vector_desde_matriz(const float m[][2], size_t n) {
   
   return v;
 }
- 
+*/
 
   
 static void swap_coordenadas(float **v0, float **v1) { 

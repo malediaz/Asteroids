@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <time.h>
 
 #include "config.h"
 #include "nave.h"
@@ -22,6 +23,8 @@ int main() {
 	int dormir = 0;
 
 	// BEGIN código de Male y Agus
+  
+  srand(time(NULL));
 
   nave_t *nave = nave_crear();
   if (nave == NULL)
@@ -29,12 +32,17 @@ int main() {
     
   nave_inicializar(nave);
   
+  
   asteroides_t *ast = asteroides_crear();
   if (ast == NULL) {
     nave_destruir(nave);
     
     return EXIT_FAILURE;
   }
+  
+  if (!asteroides_primeros_insertar(ast))
+    return EXIT_FAILURE;
+  
   
   disparos_t *disp = disparos_crear();
   if (disp == NULL) {
@@ -58,7 +66,7 @@ int main() {
 	// END código de Male y Agus
 
 	unsigned int ticks = SDL_GetTicks();
-	while(1) {
+	while(1) {   
 		if(SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT)
 				break;
@@ -110,7 +118,7 @@ int main() {
 
 
 		// BEGIN código de Male y Agus
-
+    
 		nave_mover(nave, DT);
 
     if (!disparos_es_vacia(disp)) {    
@@ -126,9 +134,14 @@ int main() {
 
 			return EXIT_FAILURE;
     }
-
-
-		// END código de Male y Agus
+    
+    asteroides_mover(ast, DT);
+    
+    if (!asteroides_graficar(ast)) 
+      return EXIT_FAILURE;
+    
+		
+    // END código de Male y Agus
 
 
     SDL_RenderPresent(renderer);
