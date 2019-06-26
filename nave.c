@@ -74,8 +74,8 @@ void nave_mover(nave_t *nave, float dt) {
   if (nave->potencia > 0)
     nave->potencia -= nave->potencia * 0.1;
 
-  nave->vx = computar_velocidad(nave->vx, nave->potencia * sin(nave->angulo), dt);
-  nave->vy = computar_velocidad(nave->vy, nave->potencia * cos(nave->angulo), dt);
+  nave->vx = computar_velocidad(nave->vx, nave->potencia * cos(nave->angulo), dt);
+  nave->vy = computar_velocidad(nave->vy, -nave->potencia * sin(nave->angulo), dt);
   nave->px = computar_posicion(nave->px, nave->vx, dt);
   nave->py = computar_posicion(nave->py, nave->vy, dt);
   
@@ -95,3 +95,4 @@ bool nave_dibujar(const nave_t *nave) {
   
   return true;
 }
+

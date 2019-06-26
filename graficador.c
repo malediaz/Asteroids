@@ -113,7 +113,7 @@ bool graficador_dibujar(const char *nombre, float escala, float x, float y, doub
     sprites_t *dato = iterador_actual(li);
     
     if (strcmp(nombre, dato->nombre) == 0) {
-      vector_rotar(dato->coords, dato->n, angulo - NAVE_ANGULO_INICIAL);
+      vector_rotar(dato->coords, dato->n, angulo);
       vector_trasladar(dato->coords, dato->n, x, -y);
       
       for(size_t i = 1; i < dato->n; i++)
@@ -126,7 +126,7 @@ bool graficador_dibujar(const char *nombre, float escala, float x, float y, doub
       );
       
       vector_trasladar(dato->coords, dato->n, -x, y);
-      vector_rotar(dato->coords, dato->n, -angulo + NAVE_ANGULO_INICIAL);
+      vector_rotar(dato->coords, dato->n, -angulo);
 
       iterador_destruir(li);
 
