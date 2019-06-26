@@ -49,7 +49,8 @@ void *iterador_actual(const iterador_t *li){
 
 
 bool iterador_siguiente(iterador_t *li){
-  if (li->n == NULL)
+
+  if (li->n == NULL || li->n->sig == NULL)
     return false;
 
   li->ant = li->n;
