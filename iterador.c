@@ -4,16 +4,16 @@
 #include "lista.h"
 #include "iterador.h"
 
-struct nodo {
+struct nodo{
   void *dato;
   struct nodo *sig;
 };
 
-struct lista {
+struct lista{
   nodo_t *prim;
 };
 
-struct iterador {
+struct iterador{
   nodo_t *n;    //nodo actual
   nodo_t *ant;  //nodo anterior
   lista_t *l;
@@ -21,10 +21,11 @@ struct iterador {
 };
 
 
-iterador_t *iterador_crear(lista_t *l) {
+iterador_t *iterador_crear(lista_t *l){
+
   iterador_t *li = malloc(sizeof(iterador_t));
 
-  if (li == NULL)
+  if(li == NULL)
     return NULL;
 
   li->l = l;
@@ -35,13 +36,15 @@ iterador_t *iterador_crear(lista_t *l) {
 }
 
 
-void iterador_destruir(iterador_t *li) {
+void iterador_destruir(iterador_t *li){
+
   free(li);
 }
 
 
 void *iterador_actual(const iterador_t *li){
-  if (li == NULL)
+
+  if(li == NULL)
     return NULL;
 
   return li->n->dato;
@@ -50,7 +53,7 @@ void *iterador_actual(const iterador_t *li){
 
 bool iterador_siguiente(iterador_t *li){
 
-  if (li->n == NULL || li->n->sig == NULL)
+  if(li->n == NULL)
     return false;
 
   li->ant = li->n;
@@ -61,7 +64,8 @@ bool iterador_siguiente(iterador_t *li){
 
 
 bool iterador_termino(const iterador_t *li){
-  if (li->n == NULL)
+
+  if(li->n == NULL)
     return true;
 
   return false;
@@ -69,10 +73,11 @@ bool iterador_termino(const iterador_t *li){
 
 
 void *iterador_eliminar(iterador_t *li){
-  if (li->n == NULL)
+
+  if(li->n == NULL)
    return NULL;
 
-  if (li->ant == NULL)
+  if(li->ant == NULL)
     return lista_extraer_primero(li->l);
 
   void *dato = li->n->dato;
@@ -86,13 +91,14 @@ void *iterador_eliminar(iterador_t *li){
 }
 
 
-bool iterador_insertar(iterador_t *li, void *dato) {
-  if (li->n == NULL)
+bool iterador_insertar(iterador_t *li, void *dato){
+
+  if(li->n == NULL)
     return false;
 
   nodo_t *a = nodo_crear(dato);
 
-  if (a == NULL)
+  if(a == NULL)
     return false;
 
   a->sig = li->n->sig;
