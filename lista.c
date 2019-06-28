@@ -3,19 +3,19 @@
 
 #include "lista.h"
 
-struct nodo {
+struct nodo{
   void *dato;
   struct nodo *sig;
 };
 
-struct lista {
+struct lista{
   nodo_t *prim;
 };
 
-nodo_t *nodo_crear(void *d) {
+nodo_t *nodo_crear(void *d){
   nodo_t *n = malloc(sizeof(nodo_t));
 
-  if (n == NULL)
+  if(n == NULL)
     return NULL;
 
   n->sig = NULL;
@@ -24,19 +24,19 @@ nodo_t *nodo_crear(void *d) {
   return n;
 }
 
-lista_t *lista_crear() {
+lista_t *lista_crear(){
   lista_t *l = malloc(sizeof(lista_t));
-  
-  if (l == NULL)
+
+  if(l == NULL)
     return NULL;
-    
+
   l->prim = NULL;
-  
+
   return l;
 }
 
 void *lista_extraer_primero(lista_t *l){
-  if (l->prim == NULL)
+  if(l->prim == NULL)
     return NULL;
 
   nodo_t *aux = l->prim;
@@ -44,7 +44,7 @@ void *lista_extraer_primero(lista_t *l){
 
   l->prim = aux->sig;
   free(aux);
-  
+
   return dato;
 }
 
@@ -52,7 +52,7 @@ void *lista_extraer_primero(lista_t *l){
 bool lista_insertar_comienzo(lista_t *l, void *d){
   nodo_t *n = nodo_crear(d);
 
-  if (n == NULL)
+  if(n == NULL)
     return false;
 
   n->sig = l->prim;
@@ -62,25 +62,43 @@ bool lista_insertar_comienzo(lista_t *l, void *d){
 
 }
 
-void lista_destruir(lista_t *l, void (*destruir_dato)(void *d)) {
+void lista_destruir(lista_t *l, void (*destruir_dato)(void *d)){
   struct nodo *n = l->prim;
-  
-  while (n != NULL) {
+
+  while(n != NULL){
     struct nodo *sig = n->sig;
-    
-    if (*destruir_dato != NULL)
+
+    if(*destruir_dato != NULL)
       destruir_dato(n->dato);
-      
+
     free(n);
-    
+
     n = sig;
   }
-    
+
   free(l);
 }
 
-bool lista_es_vacia(const lista_t *l) {
-  return l->prim == NULL;  
+bool lista_es_vacia(const lista_t *l){
+  return l->prim == NULL;
 }
 
+void *lista_extraer_ultimo(lista_t *l){
+  struct nodo *n = l->prim;
+  if(n == NULL)
+    return NULL;
 
+  struct nodo *aux =n->sig;
+
+  while(aux->sig != NULL){
+    n = aux;
+    aux = aux->sig;
+  }
+
+  void *d = aux->dato;
+
+  free(aux);
+  n->sig = NULL;
+
+  return d;
+}

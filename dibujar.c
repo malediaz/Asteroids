@@ -1,44 +1,56 @@
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-#include <SDL2/SDL.h>
-#include <time.h>
+#include"dibujar.h"
+#include<SDL2/SDL.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include"diccionario.h"
+#include"config.h"
+#include"caracteres.h"
 
-#include "dibujar.h"
-#include "caracteres.h"
-#include "diccionario.h"
-#include "config.h"
+void dibujo_objetos(float **v, size_t n, float cx, float cy, SDL_Renderer *renderer){
+
+  for(size_t i = 0; i < n - 1; i++)
+    SDL_RenderDrawLine(
+      renderer,
+      v[i][0] + cx,
+      -v[i][1] + VENTANA_ALTO - cy,
+      v[i+1][0] + cx,
+      -v[i+1][1] + VENTANA_ALTO - cy
+    );
+}
 
 
-#define MARGEN_SUP 30
-#define MAX_CADENA 9999
-#define MSJ_ALTO 20
+void dibujo_cadena(char cad[], float f, float cx, float cy, SDL_Renderer *renderer){
 
+  for(size_t j = 0; cad[j]; j++){
 
-void dibujar_cadena(char *cadena, float escala, SDL_Renderer *renderer, int posicion_x, int posicion_y) {
+    if(cad[j] != '-'){
 
-  for (size_t j = 0; cadena[j] != '\0'; j++) {
-    vectores_t letra_vector = conversion_a_vector(cadena[j]);
-    size_t letra_longitud = conversion_a_longitud(cadena[j]);
+      matrizc_t car = caracter_a_matriz(cad[j]);
 
-    for (size_t i = 1; i < letra_longitud; i++) {
-      SDL_RenderDrawLine(
-        renderer,
-        (letra_vector[i - 1][0] + posicion_x) * escala,
-       (-letra_vector[i - 1][1] + posicion_y) * escala,
-        (letra_vector[i][0] + posicion_x) * escala,
-       (-letra_vector[i][1] + posicion_y) * escala
-      );
+      size_t car_tam = caracter_a_tamagno(cad[j]);
 
-      posicion_x += CARACTER_ANCHO;
+      for(size_t i = 0; i < car_tam - 1; i++){
+
+        SDL_RenderDrawLine(
+          renderer,
+          car[i][0] * f + cx,
+          -car[i][1] * f + cy,
+          car[i+1][0] * f + cx,
+          -car[i+1][1] * f + cy
+        );
+      }
+      cx += CARACTER_ANCHO * f;
     }
   }
 }
 
+void dibujo_num(int num, int escala, float cx, float cy, SDL_Renderer *renderer){
 
-void valores_dibujar(float valor, float escala, SDL_Renderer *renderer, int posicion_x, int posicion_y) {
-  char aux[MAX_CADENA];
-  sprintf(aux, "%04f", valor);
+  char cad[12];
 
-  dibujar_cadena(aux, escala, renderer, posicion_x, posicion_y);
+  sprintf(cad, "%03d", num);
+
+  dibujo_cadena(cad, escala, cx, cy, renderer);
+
 }

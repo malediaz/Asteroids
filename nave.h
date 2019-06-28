@@ -16,6 +16,9 @@ void nave_inicializar(nave_t *nave);
 /* Incrementa la potencia de la nave en 1000 unidades */
 void nave_potencia_incrementar(nave_t *nave);
 
+/* Dibuja la cantidad de vidas que disponemos*/
+void nave_vidas_dibujar(size_t vidas);
+
 /* Rota la nave hacia la derecha */
 void nave_rotar_derecha(nave_t *nave);
 

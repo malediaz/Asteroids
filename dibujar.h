@@ -1,27 +1,23 @@
 #ifndef _DIBUJAR_H_
 #define _DIBUJAR_H_
 
-
-#define MAX_CADENA 9999
-#define MARGEN_SUP 30
-#define FLECHAS_ESPACIO 230
-#define VALORES_ESPACIO 210
-#define VALORES_MARGEN_IZQ (MSJ_INFO_MARGEN_IZQ + VALORES_ESPACIO / 2)
-#define VALORES_MARGEN_DER (MSJ_INFO_MARGEN_DER + VALORES_ESPACIO)
-#define FIGURA_ESCALA 1
-#define MSJ_ALTO 20
+#include"dibujar.h"
+#include<SDL2/SDL.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include"diccionario.h"
+#include"config.h"
 
 
-/* Dado una cadena, con su posicion inicial y su escala,
-  se imprimen los caracteres correspondientes en pantalla, a partir de un margen superior 
-  fijo para la impresión de los caracteres */
-void dibujar_cadena(char *cadena, float escala, SDL_Renderer *renderer, int posicion_x, int posicion_y);
+void dibujo_objetos(float **v, size_t n, float cx, float cy, SDL_Renderer *renderer);
 
-/* Dado un valor, con su posicion inicial y su escala,
- y se imprimen los caracteres correspondientes en pantalla, a partir de un margen
-   superior fijo */
-void valores_dibujar(float valor, float escala, SDL_Renderer *renderer, int posicion_x, int posicion_y);
+/*La voy a utilizar para poder dibujar las palabras del juego*/
+void dibujo_cadena(char cad[], float f, float cx, float cy, SDL_Renderer *renderer);
 
-
+/*Esta funcion la voy a utilizar para dibujar las variables que dependen del 
+comportamiento del juego*/
+void dibujo_num(int num, int escala, float cx, float cy, SDL_Renderer *renderer);
 
 #endif // _DIBUJAR_H_
+

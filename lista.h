@@ -27,4 +27,6 @@ void lista_destruir(lista_t *l, void (*destruir_dato)(void *d));
 /* Retorna true si la lista está vacía y false en caso contrario */
 bool lista_es_vacia(const lista_t *l);
 
+void *lista_extraer_ultimo(lista_t *l);
+
 #endif // _LISTA_H_

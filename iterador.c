@@ -17,12 +17,10 @@ struct iterador{
   nodo_t *n;    //nodo actual
   nodo_t *ant;  //nodo anterior
   lista_t *l;
-
 };
 
 
 iterador_t *iterador_crear(lista_t *l){
-
   iterador_t *li = malloc(sizeof(iterador_t));
 
   if(li == NULL)
@@ -37,13 +35,11 @@ iterador_t *iterador_crear(lista_t *l){
 
 
 void iterador_destruir(iterador_t *li){
-
   free(li);
 }
 
 
 void *iterador_actual(const iterador_t *li){
-
   if(li == NULL)
     return NULL;
 
@@ -52,7 +48,6 @@ void *iterador_actual(const iterador_t *li){
 
 
 bool iterador_siguiente(iterador_t *li){
-
   if(li->n == NULL)
     return false;
 
@@ -64,21 +59,18 @@ bool iterador_siguiente(iterador_t *li){
 
 
 bool iterador_termino(const iterador_t *li){
-
-  if(li->n == NULL)
-    return true;
-
-  return false;
+  return li->n == NULL;
 }
 
 
 void *iterador_eliminar(iterador_t *li){
-
   if(li->n == NULL)
    return NULL;
 
-  if(li->ant == NULL)
+  if(li->ant == NULL){
+    li->n = li->n->sig;
     return lista_extraer_primero(li->l);
+  }
 
   void *dato = li->n->dato;
   nodo_t *aux = li->n->sig;
@@ -92,17 +84,21 @@ void *iterador_eliminar(iterador_t *li){
 
 
 bool iterador_insertar(iterador_t *li, void *dato){
-
-  if(li->n == NULL)
+  if(li == NULL)
     return false;
 
-  nodo_t *a = nodo_crear(dato);
+  if(li->n == NULL){
+    lista_insertar_comienzo(li->l, dato);
 
-  if(a == NULL)
+    return true;
+  }
+
+  nodo_t *n = nodo_crear(dato);
+  if (n == NULL)
     return false;
 
-  a->sig = li->n->sig;
-  li->n->sig = a;
+  n->sig = li->n->sig;
+  li->n->sig = n;
 
   return true;
 

@@ -26,5 +26,7 @@ void *iterador_eliminar(iterador_t *li);
   permanece apuntando al dato actual */
 bool iterador_insertar(iterador_t *li, void *dato);
 
+void *iterador_extraer(iterador_t *li);
+
 
 #endif // _ITERADOR_H_

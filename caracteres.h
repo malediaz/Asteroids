@@ -48,6 +48,5 @@ extern const int caracter_arriba[5][2];
 extern const int caracter_abajo[5][2];
 
 extern const int caracter_espacio[1][2];
-extern const int caracter_estrella[16][2];
 
 #endif // _LETRAS_H_

@@ -23,5 +23,8 @@ void vector_trasladar(float **v, size_t n, float dx, float dy);
   con respecto al origen de coordenadas */
 void vector_rotar(float **v, size_t n, double rad);
 
+/* Escala las coordenadas de un vector */
+void vector_escalar(float **v, size_t n, float escala);
+
 
 #endif // _MOVIMIENTO_H

@@ -8,7 +8,8 @@
 #include "graficador.h"
 #include "disparos.h"
 #include "asteroides.h"
-
+#include "dibujar.h"
+#include "lista.h"
 
 int main() {
 	SDL_Init(SDL_INIT_VIDEO);
@@ -23,85 +24,83 @@ int main() {
 	int dormir = 0;
 
 	// BEGIN código de Male y Agus
-  
+
   srand(time(NULL));
 
+	size_t puntaje = 0;
+
+	size_t mejor_puntaje = 0;
+
   nave_t *nave = nave_crear();
-  if (nave == NULL)
+  if(nave == NULL)
     return EXIT_FAILURE;
-    
+
   nave_inicializar(nave);
-  
-  
-  asteroides_t *ast = asteroides_crear();
-  if (ast == NULL) {
+
+	lista_t *ast = lista_crear();
+
+  asteroides_insertar(ast, 6);
+
+	lista_t *disp = lista_crear();
+
+  if(disp == NULL){
     nave_destruir(nave);
-    
-    return EXIT_FAILURE;
-  }
-  
-  if (!asteroides_primeros_insertar(ast))
-    return EXIT_FAILURE;
-  
-  
-  disparos_t *disp = disparos_crear();
-  if (disp == NULL) {
-    nave_destruir(nave);
-    asteroides_destruir(ast);
-    
+    lista_destruir(ast, NULL);
+
     return EXIT_FAILURE;
   }
 
   if(!graficador_inicializar("sprites.bin", renderer)) {
     nave_destruir(nave);
-    asteroides_destruir(ast);
-    disparos_destruir(disp);
-    
+    lista_destruir(ast, NULL);
+    lista_destruir(disp, NULL);
+
 		return EXIT_FAILURE;
   }
-    
+
     float px = 0, py = 0;
     double angulo = 0;
 
 	// END código de Male y Agus
 
 	unsigned int ticks = SDL_GetTicks();
-	while(1) {   
-		if(SDL_PollEvent(&event)) {
+
+	while(1){
+		if(SDL_PollEvent(&event)){
 			if (event.type == SDL_QUIT)
 				break;
-      
-      if (event.type == SDL_KEYDOWN) {
+
+      if (event.type == SDL_KEYDOWN){
 
 				// BEGIN código de Male y Agus
 
-        switch(event.key.keysym.sym) {
+        switch(event.key.keysym.sym){
 					case SDLK_UP:
             nave_potencia_incrementar(nave);
-            
+
             break;
-            
+
 					case SDLK_SPACE:
             px = nave_px(nave);
             py = nave_py(nave);
             angulo = nave_angulo(nave);
-            
-            if (!disparo_insertar(disp, px, py, angulo)) {
+
+            if(!disparo_insertar(disp, px, py, angulo)){
               nave_destruir(nave);
-              disparos_destruir(disp);
-              asteroides_destruir(ast);
+            	lista_destruir(disp, NULL);
+              lista_destruir(ast, NULL);
               graficador_finalizar();
-              
+
               return EXIT_FAILURE;
             }
-            
+
             break;
 
 					case SDLK_LEFT:
             nave_rotar_izquierda(nave);
-            
+
             break;
-          
+
 					case SDLK_RIGHT:
             nave_rotar_derecha(nave);
 
@@ -118,29 +117,49 @@ int main() {
 
 
 		// BEGIN código de Male y Agus
-    
+
 		nave_mover(nave, DT);
 
-    if (!disparos_es_vacia(disp)) {    
+    if(!lista_es_vacia(disp)){
       disparo_mover(disp, DT);
-      disparos_graficar(disp);    
+      disparos_graficar(disp);
+      asteroides_destruidos(ast, disp);
+
     }
 
-    if(!nave_dibujar(nave)) {
+    if(!nave_dibujar(nave)){
       nave_destruir(nave);
-      disparos_destruir(disp);
-      asteroides_destruir(ast);
+      lista_destruir(disp, NULL);
+      lista_destruir(ast, NULL);
       graficador_finalizar();
 
 			return EXIT_FAILURE;
     }
-    
-    asteroides_mover(ast, DT);
-    
-    if (!asteroides_graficar(ast)) 
-      return EXIT_FAILURE;
-    
-		
+
+		nave_vidas_dibujar(NAVE_VIDAS_INICIALES);
+
+		dibujo_num(mejor_puntaje, 2, VENTANA_ANCHO / 2, 60, renderer);
+		dibujo_num(puntaje, 4, 180, 60, renderer);
+		dibujo_cadena("2019 UBA INC", 2, VENTANA_ANCHO / 2 - VENTANA_ANCHO / 20, 600, renderer);
+
+		//Finalizacion del juego
+
+		if(lista_es_vacia(ast))
+			printf("ESTA VACIA");
+
+    if(lista_es_vacia(ast)){
+      nave_inicializar(nave);
+      lista_destruir(disp, NULL);
+      asteroides_insertar(ast, AST_INICIALES + 2);
+
+      dormir = 1000;
+    }
+
+    else {
+      asteroides_mover(ast, DT);
+      asteroides_graficar(ast);
+    }
+
     // END código de Male y Agus
 
 
@@ -156,12 +175,12 @@ int main() {
 	}
 
 	// BEGIN código de Male y Agus
-  
+
   nave_destruir(nave);
-  disparos_destruir(disp);
-  asteroides_destruir(ast);
+  lista_destruir(disp, NULL);
+  lista_destruir(ast, NULL);
   graficador_finalizar();
-  
+
 	// Damos la información del puntaje obtenido por stdout
   //printf("\nGAME OVER\n\nSCORE: %0.f\n\n", score);
 

@@ -5,40 +5,40 @@ INSTALL_DIR := /usr/sbin # Voy a tener que ser admin para instalar ahi
 
 all: programa
 
-main.o: main.c config.h nave.h graficador.h disparos.h asteroides.h
+main.o: main.c
 	$(CC) $(CFLAGS) $(LFLAGS) main.c
 
-nave.o: nave.c nave.h config.h movimiento.h graficador.h
+nave.o: nave.c
 	$(CC) $(CFLAGS) nave.c
 
-disparos.o: disparos.c disparos.h config.h movimiento.h graficador.h lista.h iterador.h
+disparos.o: disparos.c
 	$(CC) $(CFLAGS) disparos.c
 
-asteroides.o: asteroides.c asteroides.h config.h movimiento.h graficador.h lista.h iterador.h
+asteroides.o: asteroides.c
 	$(CC) $(CFLAGS) asteroides.c
 
-movimiento.o: movimiento.c movimiento.h config.h
+movimiento.o: movimiento.c
 	$(CC) $(CFLAGS) movimiento.c $(LFLAGS) 
 
 iterador.o: iterador.c iterador.h lista.h
 	$(CC) $(CFLAGS) iterador.c
 
-graficador.o: graficador.c graficador.h config.h diccionario.h lista.h iterador.h
+graficador.o: graficador.c
 	$(CC) $(CFLAGS) graficador.c
 
-caracteres.o: caracteres.c caracteres.h
+caracteres.o: caracteres.c
 	$(CC) $(CFLAGS) caracteres.c
 
-lista.o: lista.c lista.h
+lista.o: lista.c
 	$(CC) $(CFLAGS) lista.c
-	
-dibujar.o: dibujar.c dibujar.h config.h movimiento.h vector.h
+
+dibujar.o: dibujar.c 
 	$(CC) $(CFLAGS) dibujar.c
 
-diccionario.o: diccionario.c diccionario.h caracteres.h
+diccionario.o: diccionario.c
 	$(CC) $(CFLAGS) diccionario.c
 
-vector.o: vector.c vector.h
+vector.o: vector.c
 	$(CC) $(CFLAGS) vector.c
 
 programa: main.o graficador.o caracteres.o nave.o movimiento.o lista.o dibujar.o diccionario.o vector.o iterador.o disparos.o asteroides.o
