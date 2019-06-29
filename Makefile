@@ -38,11 +38,9 @@ dibujar.o: dibujar.c
 diccionario.o: diccionario.c
 	$(CC) $(CFLAGS) diccionario.c
 
-vector.o: vector.c
-	$(CC) $(CFLAGS) vector.c
 
-programa: main.o graficador.o caracteres.o nave.o movimiento.o lista.o dibujar.o diccionario.o vector.o iterador.o disparos.o asteroides.o
-	$(CC) main.o graficador.o caracteres.o nave.o movimiento.o lista.o dibujar.o diccionario.o vector.o iterador.o disparos.o asteroides.o -o Asteroids -lSDL2 $(LFLAGS) 
+programa: main.o graficador.o caracteres.o nave.o movimiento.o lista.o dibujar.o diccionario.o iterador.o disparos.o asteroides.o
+	$(CC) main.o graficador.o caracteres.o nave.o movimiento.o lista.o dibujar.o diccionario.o iterador.o disparos.o asteroides.o -o Asteroids -lSDL2 $(LFLAGS) 
 
 clean:
 	rm *.o

@@ -17,31 +17,6 @@ double computar_posicion(double pi, double vi ,double dt){
 }
 
 
-bool vector_esta_arriba(float **v, size_t n, float x, float y){
-  for(size_t i = 1; i < n; i++){
-    if(x >= v[i - 1][0] && x <= v[i][0]){
-      float x0 = v[i - 1][0], x1 = v[i][0];
-      float y0 = v[i - 1][1], y1 = v[i][1];
-
-      if (y > ((y1 - y0) / (x1 - x0)) * (x - x0) + y0)
-        return true;
-
-    return false;
-    }
-  }
-
-  return false;
-}
-
-
-void vector_trasladar(float **v, size_t n, float dx, float dy){
-  for(size_t i = 0; i < n; i++){
-    v[i][0] += dx;
-    v[i][1] += dy;
-  }
-}
-
-
 void vector_rotar(float **v, size_t n, double rad){
   float coseno = cos(rad), seno = sin(rad);
   float x, y;

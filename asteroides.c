@@ -18,7 +18,10 @@ struct asteroide {
   double vy;
   double angulo;
   float radio;
+  char tipo[10];
 };
+
+static char *ast_tipo[] = {"ROCK1", "ROCK2", "ROCK3", "ROCK4"};
 
 
 ast_t *asteroide_crear() {
@@ -34,7 +37,7 @@ static float rand_float(float p0, float p1) {
 }
 
 
-void asteroide_inicializar(ast_t *ast_actual, float radio, float x, float y) {
+void asteroide_inicializar(ast_t *ast_actual, float radio, float x, float y, char tipo[]) {
   ast_actual->radio = radio;
 
   double vaux_max = (1000.0 / ast_actual->radio) + 100;
@@ -46,11 +49,12 @@ void asteroide_inicializar(ast_t *ast_actual, float radio, float x, float y) {
   ast_actual->py = y;
   ast_actual->vx = velocidad * cos(ast_actual->angulo);
   ast_actual->vy = velocidad * sin(ast_actual->angulo);
+  strcpy(ast_actual->tipo, tipo);
 }
 
 
 bool asteroide_ejes_inicializar(ast_t *ast_actual, float eje_x, float eje_y) {
-  ast_actual->radio = ROCK1_R;
+  ast_actual->radio = ROCK_MAX_R;
 
   double vaux_max = (1000.0 / ast_actual->radio) + 100;
   double vaux_min = (1000.0 / ast_actual->radio) - 100;
@@ -61,8 +65,14 @@ bool asteroide_ejes_inicializar(ast_t *ast_actual, float eje_x, float eje_y) {
   ast_actual->py = eje_y * rand_float(0, VENTANA_ALTO);
   ast_actual->vx = velocidad * cos(ast_actual->angulo);
   ast_actual->vy = velocidad * sin(ast_actual->angulo);
+  
+  strcpy(ast_actual->tipo, ast_tipo[rand() % 4]);
 
   return true;
+}
+
+char *asteroide_tipo(ast_t *ast) {
+  return ast->tipo;
 }
 
 float asteroide_px(ast_t *ast) {
@@ -78,25 +88,9 @@ float asteroide_radio(ast_t *ast) {
 }
 
 bool asteroide_graficar(ast_t *ast_actual){
-  if (ast_actual->radio == ROCK1_R){
-    graficador_dibujar("ROCK1", ast_actual->radio, ast_actual->px, ast_actual->py, ast_actual->angulo);
+  graficador_dibujar(ast_actual->tipo, ast_actual->radio, ast_actual->px, ast_actual->py, ast_actual->angulo);
 
-    return true;
-  }
-
-  if (ast_actual->radio == ROCK1_R / 2){
-    graficador_dibujar("ROCK2", ast_actual->radio, ast_actual->px, ast_actual->py, ast_actual->angulo);
-
-    return true;
-  }
-
-  if (ast_actual->radio == ROCK1_R / 4){
-    graficador_dibujar("ROCK3", ast_actual->radio, ast_actual->px, ast_actual->py, ast_actual->angulo);
-
-    return true;
-  }
-
-  return false;
+  return true;
 }
 
 bool asteroide_mover(ast_t *ast_actual, float dt) {

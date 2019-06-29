@@ -5,7 +5,7 @@ typedef struct asteroide ast_t;
 
 ast_t *asteroide_crear();
 
-void asteroide_inicializar(ast_t *ast_actual, float radio, float x, float y);
+void asteroide_inicializar(ast_t *ast_actual, float radio, float x, float y, char tipo[]);
 
 bool asteroide_ejes_inicializar(ast_t *ast, float eje_x, float eje_y);
 
@@ -20,6 +20,8 @@ float asteroide_py(ast_t *ast);
 float asteroide_px(ast_t *ast);
 
 float asteroide_radio(ast_t *ast);
+
+char *asteroide_tipo(ast_t *ast);
 
 bool asteroide_colisiona(ast_t *ast_actual, float x, float y);
 

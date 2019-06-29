@@ -13,10 +13,8 @@
 #define DISPARO_VIDA 0.7
 
 #define ASTEROIDES_INICIALES 2
-#define ROCK1_R 32
-#define ROCK2_R (ROCK1_R / 2)
-#define ROCK3_R (ROCK2_R / 2)
-#define ROCK4_R (ROCK3_R / 2)
+#define ROCK_MAX_R 32
+#define ROCK_MIN_R (ROCK_MAX_R / 4)
 
 #define NAVE_X_INICIAL (VENTANA_ANCHO / 2)
 #define NAVE_Y_INICIAL (VENTANA_ALTO / 2)

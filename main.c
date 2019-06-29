@@ -28,8 +28,8 @@ int main() {
 
   srand(time(NULL));
 
-	size_t puntaje = 0;
-	size_t mejor_puntaje = 0;
+	size_t score = 0;
+	size_t best_score = 0;
 
   nave_t *nave = nave_crear();
   if(nave == NULL)
@@ -157,8 +157,8 @@ int main() {
 
 		nave_vidas_dibujar(nave);
 
-		dibujo_num(mejor_puntaje, 2, VENTANA_ANCHO / 2, 50, renderer);
-		dibujo_num(puntaje, 4, 180, 60, renderer);
+		dibujo_num(best_score, 2, VENTANA_ANCHO / 2, 50, renderer);
+		dibujo_num(score, 4, 180, 60, renderer);
 		dibujo_cadena("2019 FIUBA INC", 2, VENTANA_ANCHO / 2 - VENTANA_ANCHO / 20, 650, renderer);
 
     // Iterador para disparos
@@ -216,12 +216,16 @@ int main() {
           py = disparo_py(disp_actual);
           
           if (asteroide_colisiona(ast_actual, px, py)) {
-            iterador_eliminar(ast_li);
             iterador_eliminar(disp_li);
             
             float ast_radio = asteroide_radio(ast_actual);
+            float ast_px = asteroide_px(ast_actual);
+            float ast_py = asteroide_py(ast_actual);
+            char *ast_tipo = asteroide_tipo(ast_actual);
             
-            if (ast_radio > ROCK4_R) {
+            iterador_eliminar(ast_li);;
+            
+            if (ast_radio > ROCK_MIN_R) {
               ast_t *ast1 = asteroide_crear();
               if (ast1 == NULL) {
                 nave_destruir(nave);
@@ -246,14 +250,12 @@ int main() {
                 return EXIT_FAILURE;
               }
               
-              float ast_px = asteroide_px(ast_actual);
-              float ast_py = asteroide_py(ast_actual);
-              
-              asteroide_inicializar(ast1, ast_radio / 2, ast_px, ast_py);
-              asteroide_inicializar(ast2, ast_radio / 2, ast_px, ast_py);
+              asteroide_inicializar(ast1, ast_radio / 2, ast_px, ast_py, ast_tipo);
+              asteroide_inicializar(ast2, ast_radio / 2, ast_px, ast_py, ast_tipo);
             
               iterador_insertar(ast_li, ast1);
               iterador_insertar(ast_li,ast2);
+              
             }
             
             break;
@@ -301,7 +303,7 @@ int main() {
         dibujo_cadena("DESTROYED", 10, 250, VENTANA_ALTO / 2, renderer);
         nave_vidas_decrementar(nave);
         
-        dormir = 1000;
+        dormir = 1500;
                 
         break;
       }
@@ -316,6 +318,35 @@ int main() {
       nave_inicializar(nave);
       lista_destruir(disp, free);
       lista_destruir(ast, free);
+      
+      ast = lista_crear();
+      disp = lista_crear();
+      
+      for (size_t i = 0; i < ASTEROIDES_INICIALES / 2; i++) {
+        ast_t *ast1 = asteroide_crear();
+        if (ast1 == NULL) {
+          nave_destruir(nave);
+          lista_destruir(ast, NULL);
+      
+          return EXIT_FAILURE;
+        }
+      
+        ast_t *ast2 = asteroide_crear();
+        if (ast2 == NULL) {
+          nave_destruir(nave);
+          lista_destruir(ast, NULL);
+    
+          return EXIT_FAILURE;
+        }
+      
+        asteroide_ejes_inicializar(ast1, 0, 1);
+        asteroide_ejes_inicializar(ast2, 1, 0);
+    
+        lista_insertar_comienzo(ast, ast1);
+        lista_insertar_comienzo(ast, ast2);
+      }
+      
+      dibujo_cadena("ASTEROIDS DESTROYED", 7, 180, VENTANA_ALTO / 2, renderer);
 
       dormir = 1500;
     }
@@ -346,7 +377,8 @@ int main() {
   graficador_finalizar();
 
 	// Damos la información del puntaje obtenido por stdout
-  //printf("\nGAME OVER\n\nSCORE: %0.f\n\n", score);
+  
+  printf("\nGAME OVER\n\nSCORE: %zd\n\n", best_score);
 
 	// END código de Male y Agus
 
