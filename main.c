@@ -20,7 +20,7 @@ int main() {
 	SDL_Event event;
 
 	SDL_CreateWindowAndRenderer(VENTANA_ANCHO, VENTANA_ALTO, 0, &window, &renderer);
-	SDL_SetWindowTitle(window, "Asteroids");
+	SDL_SetWindowTitle(window, "Atari Asteroids");
 
 	int dormir = 0;
 
