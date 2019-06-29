@@ -16,6 +16,7 @@ struct mi_nave{
   double angulo;
   float potencia;
   float escala;
+  int vidas;
 };
 
 nave_t *nave_crear(){
@@ -31,6 +32,10 @@ void nave_destruir(nave_t *nave){
   free(nave);
 }
 
+void nave_setear_vidas_iniciales(nave_t *nave) {
+  nave->vidas =  NAVE_VIDAS_INICIALES;
+}
+
 void nave_inicializar(nave_t *nave){
   nave->px = NAVE_X_INICIAL;
   nave->py = NAVE_Y_INICIAL;
@@ -41,10 +46,12 @@ void nave_inicializar(nave_t *nave){
   nave->escala = NAVE_ESCALA;
 }
 
-void nave_vidas_dibujar(size_t vidas){
+bool nave_vidas_dibujar(nave_t *nave){
+  for(size_t i = 0, j = 0; i < nave->vidas; i++, j += 20)
+  	if (!graficador_dibujar("SHIP", NAVE_ESCALA, 182 + j, 80, PI / 2))
+      return false;
 
-  for(size_t i = 0, j = 0; i < vidas; i++, j += 20)
-  	graficador_dibujar("SHIP", NAVE_ESCALA, 180 + j, 80, PI / 2);
+  return true;
 }
 
 void nave_potencia_incrementar(nave_t *nave){
@@ -62,6 +69,14 @@ void nave_rotar_izquierda(nave_t *nave){
 static void velocidad_decrementar(nave_t *nave, float dt){
   nave->vx -= nave->vx * dt;
   nave->vy -= nave->vy * dt;
+}
+
+int nave_vidas(nave_t *nave) {
+  return nave->vidas;
+}
+
+void nave_vidas_decrementar(nave_t *nave) {
+  nave->vidas -= 1;
 }
 
 double nave_angulo(nave_t *nave){

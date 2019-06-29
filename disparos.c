@@ -6,11 +6,9 @@
 #include "config.h"
 #include "movimiento.h"
 #include "disparos.h"
-#include "lista.h"
-#include "iterador.h"
 #include "graficador.h"
 
-typedef struct disparo{
+struct disparo{
   float px;
   float py;
   float vx;
@@ -18,105 +16,59 @@ typedef struct disparo{
   double angulo;
   float escala;
   float vida;
-}disparo_t;
+};
 
 disparo_t *disparo_crear() {
-  disparo_t *bala = malloc(sizeof(disparo_t));
-  if (bala == NULL)
+  disparo_t *disp = malloc(sizeof(disparo_t));
+  if (disp == NULL)
     return NULL;
 
-  return bala;
+  return disp;
+}
+
+void disparo_inicializar(disparo_t *disp, float px, float py, double angulo) {
+  disp->px = px;
+  disp->py = py;
+  disp->vx = DISPARO_VELOCIDAD * cos(angulo);
+  disp->vy = -DISPARO_VELOCIDAD * sin(angulo);
+  disp->angulo = angulo;
+  disp->escala = 1;
+  disp->vida = 0;
 }
 
 
-static void disparo_inicializar(disparo_t *bala, float px, float py, double angulo){
-  bala->px = px;
-  bala->py = py;
-  bala->vx = DISPARO_VELOCIDAD * cos(angulo);
-  bala->vy = -DISPARO_VELOCIDAD * sin(angulo);
-  bala->angulo = angulo;
-  bala->escala = 1;
-  bala->vida = 0;
-}
+bool disparo_mover(disparo_t *disp, float dt){
+  disp->px = computar_posicion(disp->px, disp->vx, dt);
+  disp->py = computar_posicion(disp->py, disp->vy, dt);
+  disp->vida += dt;
 
-bool disparo_insertar(lista_t *disparo, float px, float py, double angulo){
-  disparo_t *bala = disparo_crear();
-  if (bala == NULL)
-    return false;
-
-  disparo_inicializar(bala, px, py, angulo);
-
-  if(!lista_insertar_comienzo(disparo, bala))
-    return false;
+  graficador_ajustar_variables(&disp->px, &disp->py);
 
   return true;
 }
 
-bool disparo_mover(lista_t *disparo, float dt){
-  iterador_t *li = iterador_crear(disparo);
-  if (li == NULL)
-    return false;
-
-  for ( ; !iterador_termino(li); iterador_siguiente(li)){
-    disparo_t *bala = iterador_actual(li);
-
-    bala->px = computar_posicion(bala->px, bala->vx, dt);
-    bala->py = computar_posicion(bala->py, bala->vy, dt);
-    bala->vida += dt;
-
-    if(bala->vida > DISPARO_VIDA){
-      iterador_eliminar(li);
-      iterador_destruir(li);
-
-      return true;
-    }
-
-    graficador_ajustar_variables(&bala->px, &bala->py);
-  }
-
-  iterador_destruir(li);
-
-  return true;
+int disparo_vida(disparo_t *disp) {
+  return disp->vida;
 }
 
-bool disparos_graficar(lista_t *disparo){
-  iterador_t *li = iterador_crear(disparo);
-  if (li == NULL)
-    return false;
-
-  for ( ; !iterador_termino(li); iterador_siguiente(li)){
-    disparo_t *bala = iterador_actual(li);
-
-    if (!graficador_dibujar("SHOT", bala->escala, bala->px, bala->py, bala->angulo)){
-      iterador_destruir(li);
-
-      return false;
-    }
-  }
-
-  iterador_destruir(li);
-
-  return true;
+float disparo_px(disparo_t *disp) {
+  return disp->px;
 }
 
-bool disparos_estan_adentro(lista_t *disparo, float x, float y, float radio){
-  iterador_t *li = iterador_crear(disparo);
-  if(li == NULL)
-    return false;
-
-  for( ; !iterador_termino(li); iterador_siguiente(li)){
-    disparo_t *bala = iterador_actual(li);
-    float coordenada = sqrt(pow(bala->px - x, 2) + pow(bala->py - y, 2));
-
-    if(coordenada < radio){
-      iterador_eliminar(li);
-      iterador_destruir(li);
-
-      return true;
-    }
-  }
-
-  iterador_destruir(li);
-
-  return false;
+float disparo_py(disparo_t *disp) {
+  return disp->py;
 }
+
+float disparo_angulo(disparo_t *disp) {
+  return disp->angulo;
+}
+
+bool disparo_dibujar(disparo_t *disp) {
+  return graficador_dibujar("SHOT", disp->escala, disp->px, disp->py, disp->angulo);
+}
+
+
+bool disparo_esta_adentro(disparo_t *disp, float x, float y, float radio){
+  return sqrt(pow(disp->px - x, 2) + pow(disp->py - y, 2)) < radio;
+}
+

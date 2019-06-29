@@ -16,8 +16,14 @@ void nave_inicializar(nave_t *nave);
 /* Incrementa la potencia de la nave en 1000 unidades */
 void nave_potencia_incrementar(nave_t *nave);
 
+void nave_setear_vidas_iniciales(nave_t *nave);
+
+void nave_vidas_decrementar(nave_t *nave);
+
 /* Dibuja la cantidad de vidas que disponemos*/
-void nave_vidas_dibujar(size_t vidas);
+bool nave_vidas_dibujar(nave_t *nave);
+
+int nave_vidas(nave_t *nave);
 
 /* Rota la nave hacia la derecha */
 void nave_rotar_derecha(nave_t *nave);
@@ -40,6 +46,8 @@ void nave_mover(nave_t *nave, float dt);
 
 /* Le pide al la nave que se dibuje sobre la pantalla */
 bool nave_dibujar(const nave_t *nave);
+
+int nave_vidas(nave_t *nave);
 
 
 #endif // _NAVE_H_

@@ -19,16 +19,13 @@ static SDL_Renderer *graficador;
 static lista_t *l;
 
 typedef struct sprite{
-
   char nombre[10];
   uint16_t n;
   float **coords;
-
 } sprites_t;
 
 
 bool graficador_inicializar(const char *fn, SDL_Renderer *r){
-
   FILE *binario;
   if((binario = fopen(fn, "rb")) == NULL){
     return false;
@@ -90,7 +87,7 @@ bool graficador_inicializar(const char *fn, SDL_Renderer *r){
 }
 
 void graficador_finalizar(){
-  lista_destruir(l, NULL);
+  lista_destruir(l, free);
 }
 
 void graficador_ajustar_variables(float *x, float *y){
@@ -109,6 +106,8 @@ void graficador_ajustar_variables(float *x, float *y){
 
 bool graficador_dibujar(const char *nombre, float escala, float x, float y, double angulo){
   iterador_t *li = iterador_crear(l);
+  if (li == NULL)
+    return false;
 
   for (; !iterador_termino(li); iterador_siguiente(li)){
     sprites_t *dato = iterador_actual(li);

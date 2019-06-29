@@ -1,22 +1,27 @@
 #ifndef _ASTEROIDES_H_
 #define _ASTEROIDES_H_
 
-#include "lista.h"
+typedef struct asteroide ast_t;
 
-#define AST_INICIALES 4
+ast_t *asteroide_crear();
 
-/* Inicializa los asteroides correspondientes al inicio de la partida */
-bool asteroides_insertar(lista_t *ast, size_t n_ast);
+void asteroide_inicializar(ast_t *ast_actual, float radio, float x, float y);
+
+bool asteroide_ejes_inicializar(ast_t *ast, float eje_x, float eje_y);
 
 /* Grafica todos los asteroides activos en el momento */
-bool asteroides_graficar(lista_t *ast);
+bool asteroide_graficar(ast_t *ast);
 
 /* Mueve los asteroides la posición correspondiente dado un dt de tiempo */
-bool asteroides_mover(lista_t *ast, float dt);
+bool asteroide_mover(ast_t *ast, float dt);
 
-/* Verifica si algún asteroide fue destruido por los disparos y en caso de que 
-  corresponda, crea nuevos */
-bool asteroides_destruidos(lista_t *ast, void *disp);
+float asteroide_py(ast_t *ast);
+
+float asteroide_px(ast_t *ast);
+
+float asteroide_radio(ast_t *ast);
+
+bool asteroide_colisiona(ast_t *ast_actual, float x, float y);
 
 
 #endif // _ASTEROIDES_H_

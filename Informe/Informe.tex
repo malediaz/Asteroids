@@ -1,0 +1,131 @@
+%CONFIG DEL DOC
+\documentclass[a4paper, 12pt, spanish]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{babel}
+\usepackage{multicol, enumitem}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+\usepackage{anysize} 
+
+\marginsize{2.5cm}{2.5cm}{2cm}{2cm} 
+
+
+\def\code#1{\texttt{#1}}
+
+
+\title{Informe Trabajo Práctico N°2 \linebreak \textit{Asteroids} \linebreak}
+
+\author{Malena Díaz Falvo y Agustín Ormazábal}
+\date{30 de Junio de 2019}
+
+\begin{document}
+
+
+\begin{figure}[t]
+	\includegraphics[width=8cm]{logoFIUBA} 
+\end{figure}
+\maketitle
+
+\thispagestyle{empty}
+\newpage
+
+\setcounter{page}{2}
+\pagestyle{plain}
+
+\section*{Introducción}
+El actual proyecto consta de la implementación de una reversión del juego
+Asteroids en lenguaje ISO-C99 utilizando la biblioteca gráfica SDL2. Para su recreación
+se implementó el concepto de TDA, entre otras funcionalidades, incorporados a lo largo
+del curso. \newline
+ 
+\section*{Desarrollo}
+Para abordar este proyecto, se utilizaron y modificaron algunos de los archivos brindados para el TP1 (reversión del Lunar 
+Lander). Además, se diseñaron y utilizaron diferentes TDAs para los objetos del juego, obteniendo finalmente los siguientes \texttt{.h}:
+
+\begin{multicols}{2}
+\begin{itemize}[label=$\bullet$]
+
+	\item \texttt{caracteres.h}
+	\item \texttt{config.h} 
+	\item \texttt{dibujar.h}
+	\item \texttt{diccionario.h}
+	\item \texttt{movimiento.h}
+	\item \texttt{nave.h}
+	\item \texttt{asteroides.h}
+	\item \texttt{disparos.h}
+	\item \texttt{graficador.h}
+	\item \texttt{vector.h}
+	\item \texttt{iterador.h}
+	\item \texttt{listas.h}
+	
+
+\end{itemize}
+\end{multicols}
+\medskip
+
+[cambiar a partir de acá]
+Cada uno de estos archivos está asociado a su correspondiente \texttt{.c} (a excepción de \texttt{config.h}), 
+tres de los cuales fueron suministrados por la cátedra, y cada uno posee una descripción detallada
+de las pre y postcondiciones de cada función junto con, valga la redundancia, la función de las mismas. Además, se diseñó un
+diccionario para traducir caracteres a los vectores que se encuentran en \texttt{caracteres.h} con el fin
+de poder utilizar la librería gráfica a nuestra voluntad. \newline
+
+Al inicio de cada partida, la cual se ve delimitada por el aterrizaje o destrucción de la nave, 
+se genera un terreno aleatorio nuevo, para esto se utilizó la función
+\texttt{float **terreno$\_$crear(size$\_$t *n);} brindada en el enunciado del trabajo práctico. 
+Además, se posicionarion los mensajes con sus respectivos valores, que se modificarán a lo largo del
+transcurso del juego, de forma tal que se asemeje al diseño original del mismo.\newline
+
+
+\section*{Dificultades}
+Personalmente, la mayor dificultad que se me presentó fue comenzar a utilizar la función \texttt{SDL$\_$RenderDrawLine(renderer, x0, y0, x1, y1);}
+de la biblioteca SLD2 y llegar a la conclusión de que era conveniente utilizar vectores dinámicos, para representar a la nave y al chorro,
+que sean redefinidos en cada ciclo de \texttt{while}. Esto es necesario debido al hecho de que la nave debe rotar sobre sí
+misma, dependiendo de la interacción asincrónica que se establece con el o la usuaria, mientras se traslada por el plano xy. Si, por el
+contrario, los vectores se definen por fuera del \texttt{while}, cada traslación los modificaría y se perdería el rastro del orígen de coordenadas
+para las figuras, por lo que terminarían describiendo una circunferencia a lo largo del plano en lugar de rotar sobre sí
+mismos.\newline
+
+Por otro lado, la modularización contribuyó bastante a tener un código ordenado y prolijo. Sin embargo, si no se lo actualiza con cuidado
+regularmente, se puede llegar a olvidar sacar algún prototipo de una función borrada de los módulos. Esto no implica un error de 
+compilación pero podría generar cierta confusión para aquel o aquella que quiera utilizar nuestros \texttt{.h} como una librería. Además
+al ser un enunciado de gran extención, a pesar de la lectura y relectura del mismo, siempre parecía que algun dato pasaba desapercibido.\newline
+
+
+\section*{Adicional}
+En la versión original del Lunar Lander se hace un zoom al momento de aterrizar. Con esta base, y teniendo dos diseños
+para la figura (nave chica y nave grande), se definió una distancia mínima al terreno y un intervalo del ángulo de la nave,
+y dependiendo de si se cumplen o no dichas condiciones, se dibujarán en pantalla la \textbf{nave de aterrizaje} (nave grande) 
+o \textbf{la nave de vuelo} (nave chica). \bigskip
+
+\begin{figure}[h]
+ 	\centering
+	\includegraphics[width=8cm]{naves} 
+	\caption{Naves suministradas.}
+\end{figure}
+
+\bigskip
+Esta elección se debió a que, a pesar de que ambas naves poseen sus patas desplegadas para el aterrizaje,
+la primera posee un aspecto más sólido, con una mayor resistencia ante el impacto de la nave
+contra la superficie (en caso de que éste sea un aterrizaje violento), mientras que la segunda parece más frágil e inestable.
+\newline
+
+Además, se le agregaron estrellas al fondo para recrear el escenario de la superficie lunar con su paisaje de la forma más
+acertada posible. Para esto se definió una matriz de coordenadas para la representación de una estrella, junto con las funciones necesarias
+para crear una cantidad determinada de manera aleatoria e imprimirlas.
+
+\begin{figure}[h!]
+ 	\centering
+	\includegraphics[width=16cm]{estrellas} 
+	\caption{Superficie lunar en el juego.}
+\end{figure}
+\bigskip
+
+\newpage
+Al no ser  modificaciones complicadas de implementar, que aportan a la estética del juego, creí conveniente 
+su aplicación ya que no interfiere con los campos principales a ser evaluados ni modifica los demás requisitos
+exigidos en el enunciado del trabajo práctico.
+
+
+
+\end{document}

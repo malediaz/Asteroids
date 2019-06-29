@@ -9,6 +9,7 @@
 #include "disparos.h"
 #include "asteroides.h"
 #include "dibujar.h"
+#include "iterador.h"
 #include "lista.h"
 
 int main() {
@@ -28,7 +29,6 @@ int main() {
   srand(time(NULL));
 
 	size_t puntaje = 0;
-
 	size_t mejor_puntaje = 0;
 
   nave_t *nave = nave_crear();
@@ -36,13 +36,40 @@ int main() {
     return EXIT_FAILURE;
 
   nave_inicializar(nave);
+  nave_setear_vidas_iniciales(nave);
 
 	lista_t *ast = lista_crear();
-
-  asteroides_insertar(ast, 6);
+  if (ast == NULL) {
+    nave_destruir(nave);
+    
+    return EXIT_FAILURE;
+  }
+  
+  for (size_t i = 0; i < ASTEROIDES_INICIALES / 2; i++) {
+    ast_t *ast1 = asteroide_crear();
+    if (ast1 == NULL) {
+      nave_destruir(nave);
+      lista_destruir(ast, NULL);
+      
+      return EXIT_FAILURE;
+    }
+      
+    ast_t *ast2 = asteroide_crear();
+    if (ast2 == NULL) {
+      nave_destruir(nave);
+      lista_destruir(ast, NULL);
+      
+      return EXIT_FAILURE;
+    }
+      
+    asteroide_ejes_inicializar(ast1, 0, 1);
+    asteroide_ejes_inicializar(ast2, 1, 0);
+    
+    lista_insertar_comienzo(ast, ast1);
+    lista_insertar_comienzo(ast, ast2);
+  }
 
 	lista_t *disp = lista_crear();
-
   if(disp == NULL){
     nave_destruir(nave);
     lista_destruir(ast, NULL);
@@ -60,24 +87,25 @@ int main() {
 
     float px = 0, py = 0;
     double angulo = 0;
+    //int disp_vida = 0;
 
 	// END código de Male y Agus
 
 	unsigned int ticks = SDL_GetTicks();
 
-	while(1){
-		if(SDL_PollEvent(&event)){
+	while (1){
+		if (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT)
 				break;
 
-      if (event.type == SDL_KEYDOWN){
+      if (event.type == SDL_KEYDOWN) {
 
 				// BEGIN código de Male y Agus
 
-        switch(event.key.keysym.sym){
+        switch(event.key.keysym.sym) {
 					case SDLK_UP:
             nave_potencia_incrementar(nave);
-
+            
             break;
 
 					case SDLK_SPACE:
@@ -85,7 +113,8 @@ int main() {
             py = nave_py(nave);
             angulo = nave_angulo(nave);
 
-            if(!disparo_insertar(disp, px, py, angulo)){
+            disparo_t *bala = disparo_crear();
+            if (bala == NULL) {
               nave_destruir(nave);
             	lista_destruir(disp, NULL);
               lista_destruir(ast, NULL);
@@ -93,18 +122,23 @@ int main() {
 
               return EXIT_FAILURE;
             }
-
+            
+            disparo_inicializar(bala, px, py, angulo);
+            lista_insertar_comienzo(disp, bala);
+            
             break;
+
 
 					case SDLK_LEFT:
             nave_rotar_izquierda(nave);
-
+            
             break;
 
 					case SDLK_RIGHT:
             nave_rotar_derecha(nave);
-
+            
             break;
+
 				}
 				// END código de Male y Agus
 
@@ -117,48 +151,175 @@ int main() {
 
 
 		// BEGIN código de Male y Agus
-
+    
 		nave_mover(nave, DT);
+    nave_dibujar(nave);
 
-    if(!lista_es_vacia(disp)){
-      disparo_mover(disp, DT);
-      disparos_graficar(disp);
-      asteroides_destruidos(ast, disp);
+		nave_vidas_dibujar(nave);
 
-    }
-
-    if(!nave_dibujar(nave)){
-      nave_destruir(nave);
-      lista_destruir(disp, NULL);
-      lista_destruir(ast, NULL);
-      graficador_finalizar();
-
-			return EXIT_FAILURE;
-    }
-
-		nave_vidas_dibujar(NAVE_VIDAS_INICIALES);
-
-		dibujo_num(mejor_puntaje, 2, VENTANA_ANCHO / 2, 60, renderer);
+		dibujo_num(mejor_puntaje, 2, VENTANA_ANCHO / 2, 50, renderer);
 		dibujo_num(puntaje, 4, 180, 60, renderer);
-		dibujo_cadena("2019 UBA INC", 2, VENTANA_ANCHO / 2 - VENTANA_ANCHO / 20, 600, renderer);
+		dibujo_cadena("2019 FIUBA INC", 2, VENTANA_ANCHO / 2 - VENTANA_ANCHO / 20, 650, renderer);
 
+    // Iterador para disparos
+    
+    iterador_t *disp1_li = iterador_crear(disp);
+    if(disp1_li == NULL)
+      
+      // Validar
+      
+      return EXIT_FAILURE;
+    
+    for( ; !iterador_termino(disp1_li); iterador_siguiente(disp1_li)) {
+      disparo_t *disp1_actual = iterador_actual(disp1_li);
+      disparo_mover(disp1_actual, DT);
+      
+      if(disparo_vida(disp1_actual) > DISPARO_VIDA) {
+        iterador_eliminar(disp1_li);
+        
+        break;
+      }
+      
+      disparo_dibujar(disp1_actual);
+    }
+       
+    iterador_destruir(disp1_li);
+    
+    
+    // Iterador para asteroides
+    iterador_t *ast_li = iterador_crear(ast);
+    if (ast_li == NULL)
+      return false;
+      
+    for ( ; !iterador_termino(ast_li); iterador_siguiente(ast_li)) {
+      ast_t *ast_actual = iterador_actual(ast_li);
+      
+      asteroide_mover(ast_actual, DT);
+      asteroide_graficar(ast_actual);
+      
+      if(!lista_es_vacia(disp)) {
+        iterador_t *disp_li = iterador_crear(disp);
+        if (disp_li == NULL) {
+          nave_destruir(nave);
+          lista_destruir(ast, free);
+          iterador_destruir(ast_li);
+          iterador_destruir(disp_li);
+          graficador_finalizar();
+            
+          return EXIT_FAILURE;
+        }            
+
+        for ( ; !iterador_termino(disp_li); iterador_siguiente(disp_li)) {
+          disparo_t *disp_actual = iterador_actual(disp_li);
+
+          px = disparo_px(disp_actual);
+          py = disparo_py(disp_actual);
+          
+          if (asteroide_colisiona(ast_actual, px, py)) {
+            iterador_eliminar(ast_li);
+            iterador_eliminar(disp_li);
+            
+            float ast_radio = asteroide_radio(ast_actual);
+            
+            if (ast_radio > ROCK4_R) {
+              ast_t *ast1 = asteroide_crear();
+              if (ast1 == NULL) {
+                nave_destruir(nave);
+                lista_destruir(disp, free);
+                lista_destruir(ast, free);
+                iterador_destruir(ast_li);
+                iterador_destruir(disp_li);
+                graficador_finalizar();
+                
+                return EXIT_FAILURE;
+              }
+                
+              ast_t *ast2 = asteroide_crear();
+              if (ast2 == NULL) {
+                nave_destruir(nave);
+                lista_destruir(disp, free);
+                lista_destruir(ast, free);
+                iterador_destruir(ast_li);
+                iterador_destruir(disp_li);
+                graficador_finalizar();
+
+                return EXIT_FAILURE;
+              }
+              
+              float ast_px = asteroide_px(ast_actual);
+              float ast_py = asteroide_py(ast_actual);
+              
+              asteroide_inicializar(ast1, ast_radio / 2, ast_px, ast_py);
+              asteroide_inicializar(ast2, ast_radio / 2, ast_px, ast_py);
+            
+              iterador_insertar(ast_li, ast1);
+              iterador_insertar(ast_li,ast2);
+            }
+            
+            break;
+          }
+        }
+        
+        iterador_destruir(disp_li);
+      }
+      
+      px = nave_px(nave);
+      py = nave_py(nave);
+      
+      if(asteroide_colisiona(ast_actual, px, py)) {
+        nave_inicializar(nave);
+        lista_destruir(disp, free);
+        lista_destruir(ast, free);
+        
+        ast = lista_crear();
+        disp = lista_crear();
+      
+        for (size_t i = 0; i < ASTEROIDES_INICIALES / 2; i++) {
+          ast_t *ast1 = asteroide_crear();
+          if (ast1 == NULL) {
+            nave_destruir(nave);
+            lista_destruir(ast, NULL);
+      
+            return EXIT_FAILURE;
+          }
+      
+          ast_t *ast2 = asteroide_crear();
+          if (ast2 == NULL) {
+            nave_destruir(nave);
+            lista_destruir(ast, NULL);
+      
+            return EXIT_FAILURE;
+          }
+      
+          asteroide_ejes_inicializar(ast1, 0, 1);
+          asteroide_ejes_inicializar(ast2, 1, 0);
+    
+          lista_insertar_comienzo(ast, ast1);
+          lista_insertar_comienzo(ast, ast2);
+        }
+        
+        dibujo_cadena("DESTROYED", 10, 250, VENTANA_ALTO / 2, renderer);
+        nave_vidas_decrementar(nave);
+        
+        dormir = 1000;
+                
+        break;
+      }
+    }
+    
+    iterador_destruir(ast_li);
+    
+    
 		//Finalizacion del juego
-
-		if(lista_es_vacia(ast))
-			printf("ESTA VACIA");
-
-    if(lista_es_vacia(ast)){
+    
+    if (lista_es_vacia(ast)) {
       nave_inicializar(nave);
-      lista_destruir(disp, NULL);
-      asteroides_insertar(ast, AST_INICIALES + 2);
+      lista_destruir(disp, free);
+      lista_destruir(ast, free);
 
-      dormir = 1000;
+      dormir = 1500;
     }
 
-    else {
-      asteroides_mover(ast, DT);
-      asteroides_graficar(ast);
-    }
 
     // END código de Male y Agus
 
@@ -168,6 +329,9 @@ int main() {
 		if(dormir) {
 			SDL_Delay(dormir);
 			dormir = 0;
+      
+    if(nave_vidas(nave) == 0)
+      break;
 		}
 		else if(ticks < 1000 / JUEGO_FPS)
 			SDL_Delay(1000 / JUEGO_FPS - ticks);
@@ -177,8 +341,8 @@ int main() {
 	// BEGIN código de Male y Agus
 
   nave_destruir(nave);
-  lista_destruir(disp, NULL);
-  lista_destruir(ast, NULL);
+  lista_destruir(disp, free);
+  lista_destruir(ast, free);
   graficador_finalizar();
 
 	// Damos la información del puntaje obtenido por stdout
@@ -190,5 +354,6 @@ int main() {
 	SDL_DestroyWindow(window);
 
 	SDL_Quit();
+  
 	return 0;
 }
