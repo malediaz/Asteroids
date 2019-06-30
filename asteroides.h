@@ -19,7 +19,7 @@ float asteroide_py(ast_t *ast);
 
 float asteroide_px(ast_t *ast);
 
-float asteroide_radio(ast_t *ast);
+int asteroide_radio(ast_t *ast);
 
 char *asteroide_tipo(ast_t *ast);
 

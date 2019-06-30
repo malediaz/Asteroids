@@ -61,11 +61,11 @@ bool asteroide_ejes_inicializar(ast_t *ast_actual, float eje_x, float eje_y) {
   double velocidad = rand_float(vaux_min, vaux_max);
 
   ast_actual->angulo = rand_float(0, 2 * PI);
-  ast_actual->px = eje_x * rand_float(0, VENTANA_ANCHO); 
+  ast_actual->px = eje_x * rand_float(0, VENTANA_ANCHO);
   ast_actual->py = eje_y * rand_float(0, VENTANA_ALTO);
   ast_actual->vx = velocidad * cos(ast_actual->angulo);
   ast_actual->vy = velocidad * sin(ast_actual->angulo);
-  
+
   strcpy(ast_actual->tipo, ast_tipo[rand() % 4]);
 
   return true;
@@ -83,7 +83,7 @@ float asteroide_py(ast_t *ast) {
   return ast->py;
 }
 
-float asteroide_radio(ast_t *ast) {
+int asteroide_radio(ast_t *ast) {
   return ast->radio;
 }
 
@@ -98,11 +98,10 @@ bool asteroide_mover(ast_t *ast_actual, float dt) {
   ast_actual->py = computar_posicion(ast_actual->py, ast_actual->vy, dt);
 
   graficador_ajustar_variables(&ast_actual->px, &ast_actual->py);
-  
+
   return true;
 }
 
 bool asteroide_colisiona(ast_t *ast_actual, float x, float y){
   return sqrt(pow(ast_actual->px - x, 2) + pow(ast_actual->py - y, 2)) < ast_actual->radio;
 }
-
