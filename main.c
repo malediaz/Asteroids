@@ -22,20 +22,21 @@ int main(){
 	SDL_CreateWindowAndRenderer(VENTANA_ANCHO, VENTANA_ALTO, 0, &window, &renderer);
 	SDL_SetWindowTitle(window, "Atari Asteroids");
 
-	int dormir = 0;
-  bool press_start = true;
-  bool first_game = true;
 
 	// BEGIN código de Male y Agus
-
+  
   srand(time(NULL));
-
+  
+  bool press_start = true;
+  bool first_game = true;
+  bool nave_dibujada = true;
 	unsigned int score = 0;
 	unsigned int high_score = 0;
 	size_t nasteroides = ASTEROIDES_NUEVOS;
 	size_t vidas = 0;
+	int dormir = 0;
   
-
+  
   nave_t *nave = nave_crear();
   if(nave == NULL)
     return EXIT_FAILURE;
@@ -65,12 +66,10 @@ int main(){
 		return EXIT_FAILURE;
   }
 
-  bool nave_esta_adentro = false;
-
   float px = 0, py = 0;
   double angulo = 0;
-  float dt = 1;
   int eje_x = 0, eje_y = 0;
+  float tracker;
 
 	// END código de Male y Agus
 
@@ -87,13 +86,13 @@ int main(){
 
         switch(event.key.keysym.sym){
 					case SDLK_UP:
-            if(!press_start)
+            if(!press_start && tracker > 1)
               nave_potencia_incrementar(nave);
 
             break;
 
 					case SDLK_SPACE:
-            if (!press_start) {
+            if (!press_start && tracker > 1) {
               px = nave_px(nave);
               py = nave_py(nave);
               angulo = nave_angulo(nave);
@@ -115,7 +114,7 @@ int main(){
               break;
             
 					case SDLK_LEFT:
-            if(!press_start)
+            if(!press_start && tracker > 1)
               nave_rotar_izquierda(nave);
 
             break;
@@ -140,6 +139,7 @@ int main(){
 		// BEGIN código de Male y Agus
     
     if(press_start) {
+      tracker = 1;
       if(first_game) 
         dibujo_mensajes_inicio_juego(renderer);
       else {
@@ -155,7 +155,7 @@ int main(){
         score = 0;
         nasteroides = 0;
 
-        for(size_t i = 0; i < ASTEROIDES_INICIALES; i++){                                   // Acá hay uno --------------------------------
+        for(size_t i = 0; i < ASTEROIDES_INICIALES; i++){                             
           ast_t *ast = asteroide_crear();
           if(ast == NULL) {
             nave_destruir(nave);
@@ -174,8 +174,12 @@ int main(){
       }
     }
     else {
-      nave_dibujar(nave);
-      nave_mover(nave, DT);
+      if(tracker >= 1 && nave_dibujada) {
+        nave_dibujar(nave);
+        nave_mover(nave, DT);
+      }
+      
+      tracker += DT;
       
       nave_vidas_dibujar(vidas);
       dibujo_mensajes_en_juego(score, high_score, renderer);
@@ -187,7 +191,6 @@ int main(){
         break;
 
       for( ; !iterador_termino(disp_li); iterador_siguiente(disp_li)){
-
         disparo_t *disp_actual = iterador_actual(disp_li);
         disparo_mover(disp_actual, DT);
 
@@ -263,7 +266,7 @@ int main(){
 
               if(ast_radio > ROCK_MIN_R){
                 for(size_t i = 0; i < ASTEROIDES_NUEVOS; i++){
-                  ast_t *ast = asteroide_crear();                                                   // Y este sigue acá --------------------
+                  ast_t *ast = asteroide_crear();             
                   if(ast == NULL) {
                     nave_destruir(nave);
                     lista_destruir(disp, free);
@@ -290,22 +293,26 @@ int main(){
         px = nave_px(nave);
         py = nave_py(nave);
       
-        dt += DT;
-      
-        if(asteroide_colisiona(ast_actual, px, py) && !nave_esta_adentro){
-          iterador_eliminar(ast_li);
-          nave_inicializar(nave);
-          vidas--;
-          dt = 0;
+        if(asteroide_colisiona(ast_actual, px, py) && tracker >= 1){
+          if(nave_dibujada) {
+            iterador_eliminar(ast_li);
+            nave_inicializar(nave);
+            vidas--;
+            tracker = 0;
+            nave_dibujada = false;
         
-          break;
+            break;
+          }
         }
+        else
+          nave_dibujada = true;
       }
 
       iterador_destruir(ast_li);
 
       if(lista_es_vacia(asteroides)){
         asteroides = lista_crear();
+        nasteroides += 2;
 
         for(size_t i = 0; i < (ASTEROIDES_INICIALES + nasteroides); i++){
           ast_t *ast = asteroide_crear();
@@ -321,8 +328,6 @@ int main(){
 
           lista_insertar_comienzo(asteroides, ast);
         }
-        
-        nasteroides += 2;
       }
       
 		//Finalizacion de la partida

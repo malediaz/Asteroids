@@ -50,7 +50,7 @@ void dibujo_mensajes_fin_juego(unsigned int score, unsigned int high_score, SDL_
 }
 
 void dibujo_mensajes_en_juego(unsigned int score, unsigned int high_score, SDL_Renderer *renderer) {
-  dibujo_num(high_score, 2, VENTANA_ANCHO / 2, 50, renderer);
+  dibujo_num(high_score, 2, VENTANA_ANCHO / 2 - 25, 50, renderer);
   dibujo_num(score, 4, 180, 60, renderer);
 }
 

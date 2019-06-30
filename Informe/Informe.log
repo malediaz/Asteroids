@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.4.9)  29 JUN 2019 17:21
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.4.9)  30 JUN 2019 18:58
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -279,41 +279,38 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 48.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 48.
+<start_screen.png, id=11, 988.69376pt x 691.58376pt>
+File: start_screen.png Graphic file (type png)
+<use start_screen.png>
+Package pdftex.def Info: start_screen.png  used on input line 67.
+(pdftex.def)             Requested size: 341.43306pt x 238.82881pt.
+<juego.png, id=13, 988.69376pt x 691.58376pt>
+File: juego.png Graphic file (type png)
+<use juego.png>
+Package pdftex.def Info: juego.png  used on input line 75.
+(pdftex.def)             Requested size: 341.43306pt x 238.82881pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 66--72
+LaTeX Warning: `h' float specifier changed to `ht'.
 
- []
+<game_over_screen.png, id=14, 1002.74625pt x 697.60625pt>
+File: game_over_screen.png Graphic file (type png)
+<use game_over_screen.png>
+Package pdftex.def Info: game_over_screen.png  used on input line 81.
+(pdftex.def)             Requested size: 341.43306pt x 237.53426pt.
 
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-Underfull \hbox (badness 10000) in paragraph at lines 73--78
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 81--88
-
- []
-
-[2]
-Underfull \hbox (badness 10000) in paragraph at lines 89--93
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 108--112
-
- []
-
-[3] [4] (./Informe.aux
+[2 <./start_screen.png>] [3 <./juego.png (PNG copy)>] [4 <./game_over_screen.pn
+g (PNG copy)>] (./Informe.aux
 LaTeX Info: Redefining \. on input line 6.
 LaTeX Info: Redefining \% on input line 6.
 ) ) 
 Here is how much of TeX's memory you used:
- 3519 strings out of 492982
- 49522 string characters out of 6134897
- 126524 words of memory out of 5000000
- 7040 multiletter control sequences out of 15000+600000
- 9632 words of font info for 34 fonts, out of 8000000 for 9000
+ 3530 strings out of 492982
+ 49755 string characters out of 6134897
+ 125524 words of memory out of 5000000
+ 7048 multiletter control sequences out of 15000+600000
+ 9325 words of font info for 33 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  41i,7n,34p,325b,598s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></u
@@ -322,10 +319,10 @@ e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texli
 ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dis
 t/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on Informe.pdf (4 pages, 716572 bytes).
+Output written on Informe.pdf (4 pages, 724372 bytes).
 PDF statistics:
- 42 PDF objects out of 1000 (max. 8388607)
- 28 compressed objects within 1 object stream
+ 47 PDF objects out of 1000 (max. 8388607)
+ 29 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
