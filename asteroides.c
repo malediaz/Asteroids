@@ -17,7 +17,7 @@ struct asteroide {
   double vx;
   double vy;
   double angulo;
-  float radio;
+  int radio;
   char tipo[10];
 };
 
@@ -43,7 +43,7 @@ void asteroide_ejes_elegir(int *x, int *y){
     (*x)++;
 }
 
-void asteroide_inicializar(ast_t *ast_actual, float radio, float x, float y, char tipo[]) {
+void asteroide_inicializar(ast_t *ast_actual, int radio, float x, float y, char tipo[]) {
   ast_actual->radio = radio;
 
   double vaux_max = (1000.0 / ast_actual->radio) + 100;

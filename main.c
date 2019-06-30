@@ -48,21 +48,6 @@ int main(){
 
     return EXIT_FAILURE;
   }
-/*
-  for(size_t i = 0; i < ASTEROIDES_INICIALES; i++){
-
-    ast_t *ast = asteroide_crear();
-    if(ast == NULL){
-      nave_destruir(nave);
-      lista_destruir(asteroides, NULL);
-
-      return EXIT_FAILURE;
-    }
-
-    asteroide_ejes_inicializar(ast, 0, 1);
-
-    lista_insertar_comienzo(asteroides, ast);
-  }*/
 
 	lista_t *disp = lista_crear();
   if(disp == NULL){
@@ -168,6 +153,7 @@ int main(){
         press_start = false;
         vidas = NAVE_VIDAS_INICIALES;
         score = 0;
+        nasteroides = 0;
 
         for(size_t i = 0; i < ASTEROIDES_INICIALES; i++){                                   // Acá hay uno --------------------------------
           ast_t *ast = asteroide_crear();
@@ -188,12 +174,9 @@ int main(){
       }
     }
     else {
-      if (!nave_esta_adentro && dt >= 1) {
-        nave_dibujar(nave);
-        nave_mover(nave, DT);
-        dt = 1;
-      }
-
+      nave_dibujar(nave);
+      nave_mover(nave, DT);
+      
       nave_vidas_dibujar(vidas);
       dibujo_mensajes_en_juego(score, high_score, renderer);
 
@@ -316,14 +299,6 @@ int main(){
           dt = 0;
         
           break;
-        }
-      
-        if(px == NAVE_X_INICIAL && py == NAVE_Y_INICIAL && asteroide_colisiona(ast_actual, px, py))
-          nave_esta_adentro = true;
-
-        else { 
-          nave_esta_adentro = false;
-          dt = 1;
         }
       }
 

@@ -8,7 +8,7 @@ ast_t *asteroide_crear();
 
 /* Inicializa un asteroide con velocidades y direcciones random en un rango establecido
   con un radio, una posición en x e y y un tipo dados */
-void asteroide_inicializar(ast_t *ast_actual, float radio, float x, float y, char tipo[]);
+void asteroide_inicializar(ast_t *ast_actual, int radio, float x, float y, char tipo[]);
 
 /* Elige el eje sobre el cual se creará un asteroide al inicio de cada juego */
 void asteroide_ejes_elegir(int *x, int *y);
@@ -24,15 +24,19 @@ bool asteroide_dibujar(ast_t *ast);
 /* Mueve un asteroide dado un dt de tiempo */
 bool asteroide_mover(ast_t *ast, float dt);
 
-
-float asteroide_py(ast_t *ast);
-
+/* Devuelve la posición en x del asteroide */
 float asteroide_px(ast_t *ast);
 
+/* Devuelva la posición en y del asteroide */
+float asteroide_py(ast_t *ast);
+
+/* Devuelve el radio del asteroide */
 int asteroide_radio(ast_t *ast);
 
+/* Devuelve el tipo de asteroide */
 char *asteroide_tipo(ast_t *ast);
 
+/* Devuelve true si los puntos x e y estan dentro del radio del asteroide */
 bool asteroide_colisiona(ast_t *ast_actual, float x, float y);
 
 

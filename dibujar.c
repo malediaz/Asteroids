@@ -8,7 +8,7 @@
 #include "config.h"
 #include "caracteres.h"
 
-void dibujo_cadena(char cad[], float f, float cx, float cy, SDL_Renderer *renderer){
+static void dibujo_cadena(char cad[], float f, float cx, float cy, SDL_Renderer *renderer){
   for(size_t j = 0; cad[j]; j++){
     if(cad[j] != '-'){
       matrizc_t car = caracter_a_matriz(cad[j]);
@@ -28,7 +28,7 @@ void dibujo_cadena(char cad[], float f, float cx, float cy, SDL_Renderer *render
   }
 }
 
-void dibujo_num(int num, int escala, float cx, float cy, SDL_Renderer *renderer){
+static void dibujo_num(int num, int escala, float cx, float cy, SDL_Renderer *renderer){
   char cad[12];
   sprintf(cad, "%03d", num);
 
