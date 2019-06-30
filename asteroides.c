@@ -93,7 +93,7 @@ int asteroide_radio(ast_t *ast) {
   return ast->radio;
 }
 
-bool asteroide_graficar(ast_t *ast_actual){
+bool asteroide_dibujar(ast_t *ast_actual){
   graficador_dibujar(ast_actual->tipo, ast_actual->radio, ast_actual->px, ast_actual->py, ast_actual->angulo);
 
   return true;

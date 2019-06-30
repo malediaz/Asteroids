@@ -228,7 +228,7 @@ int main(){
         ast_t *ast_actual = iterador_actual(ast_li);
 
         asteroide_mover(ast_actual, DT);
-        asteroide_graficar(ast_actual);
+        asteroide_dibujar(ast_actual);
       
         px = nave_px(nave);
         py = nave_py(nave);
