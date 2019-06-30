@@ -56,7 +56,10 @@ int main(){
       return EXIT_FAILURE;
     }
 
-    asteroide_ejes_inicializar(ast, 0, 1);
+		int eje_x, eje_y;
+
+		ejes_inicializar(&eje_x, &eje_y);
+		asteroide_ejes_inicializar(ast, eje_x, eje_y);
 
     lista_insertar_comienzo(asteroides, ast);
   }
@@ -173,6 +176,8 @@ int main(){
     }
 
     iterador_destruir(disp_li);
+		//Si nave choca con el asteroides
+
 
     // Iterador para asteroides
     iterador_t *ast_li = iterador_crear(asteroides);
@@ -265,7 +270,6 @@ int main(){
 
       if(asteroide_colisiona(ast_actual, px, py)){
 
-
 				nave_inicializar(nave);
 
 				vidas--;
@@ -288,7 +292,10 @@ int main(){
           return EXIT_FAILURE;
         }
 
-        asteroide_ejes_inicializar(ast, 0, 1);
+				int eje_x, eje_y;
+
+				ejes_inicializar(&eje_x, &eje_y);
+        asteroide_ejes_inicializar(ast, eje_x, eje_y);
 
         lista_insertar_comienzo(asteroides, ast);
       }
@@ -296,8 +303,11 @@ int main(){
     }
 
 		//Finalizacion del juego
+		if(vidas == 0){
 
+			dibujo_cadena("GAME OVER", 6, VENTANA_ANCHO / 2 - VENTANA_ANCHO / 8, VENTANA_ALTO / 2, renderer);
 
+		}
 
     // END código de Male y Agus
 
@@ -322,10 +332,6 @@ int main(){
   lista_destruir(disp, free);
   lista_destruir(asteroides, free);
   graficador_finalizar();
-
-	// Damos la información del puntaje obtenido por stdout
-
-  printf("\nGAME OVER\n\nSCORE: %zd\n\n", best_score);
 
 	// END código de Male y Agus
 
