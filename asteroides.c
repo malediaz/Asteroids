@@ -36,13 +36,6 @@ static float rand_float(float p0, float p1) {
   return ((float)rand() / (float)RAND_MAX) * (p1 - p0) + p0;
 }
 
-void ejes_inicializar(int *x, int *y){
-
-  *y = rand() % 2;
-  *x = 0;
-  if(*y == 0)
-    (*x)++;
-}
 
 void asteroide_inicializar(ast_t *ast_actual, float radio, float x, float y, char tipo[]) {
   ast_actual->radio = radio;
@@ -60,7 +53,7 @@ void asteroide_inicializar(ast_t *ast_actual, float radio, float x, float y, cha
 }
 
 
-bool asteroide_ejes_inicializar(ast_t *ast_actual, float eje_x, float eje_y){
+bool asteroide_ejes_inicializar(ast_t *ast_actual, float eje_x, float eje_y) {
   ast_actual->radio = ROCK_MAX_R;
 
   double vaux_max = (1000.0 / ast_actual->radio) + 100;
