@@ -85,6 +85,7 @@ int main(){
   float px = 0, py = 0;
   double angulo = 0;
   float dt = 1;
+  int eje_x = 0, eje_y = 0;
 
 	// END código de Male y Agus
 
@@ -176,8 +177,9 @@ int main(){
 
             return EXIT_FAILURE;
           }
-
-          asteroide_ejes_inicializar(ast, 0, 1);
+          
+          asteroide_ejes_elegir(&eje_x, &eje_y);
+          asteroide_ejes_inicializar(ast, eje_x, eje_y);
 
           lista_insertar_comienzo(asteroides, ast);
         }
@@ -339,7 +341,9 @@ int main(){
             return EXIT_FAILURE;
           }
 
-          asteroide_ejes_inicializar(ast, 0, 1);
+          asteroide_ejes_elegir(&eje_x, &eje_y);
+          asteroide_ejes_inicializar(ast, eje_x, eje_y);
+
           lista_insertar_comienzo(asteroides, ast);
         }
         

@@ -9,6 +9,8 @@ void asteroide_inicializar(ast_t *ast_actual, float radio, float x, float y, cha
 
 bool asteroide_ejes_inicializar(ast_t *ast, float eje_x, float eje_y);
 
+void asteroide_ejes_elegir(int *x, int *y);
+
 /* Grafica todos los asteroides activos en el momento */
 bool asteroide_graficar(ast_t *ast);
 
