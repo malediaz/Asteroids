@@ -24,6 +24,23 @@ typedef struct sprite{
   float **coords;
 } sprites_t;
 
+/*
+sprites_t *crear_sprites(){
+
+
+
+
+}
+*/
+static void destruir_sprites(void *dato){
+
+  for(size_t i = 0; i < ((sprites_t *)dato)->n; i++)
+    free(((sprites_t *)dato)->coords[i]);
+
+  free(((sprites_t *)dato)->coords);
+
+  free(dato);
+}
 
 bool graficador_inicializar(const char *fn, SDL_Renderer *r){
   FILE *binario;
@@ -87,7 +104,8 @@ bool graficador_inicializar(const char *fn, SDL_Renderer *r){
 }
 
 void graficador_finalizar(){
-  lista_destruir(l, free);
+
+  lista_destruir(l, destruir_sprites);
 }
 
 void graficador_ajustar_variables(float *x, float *y){
