@@ -29,10 +29,10 @@ int main(){
   
   bool press_start = true;
   bool first_game = true;
-  bool nave_dibujada = true;
+  bool ship_state = true;
 	unsigned int score = 0;
 	unsigned int high_score = 0;
-	size_t nasteroides = ASTEROIDES_NUEVOS;
+	size_t nasteroides = 0;
 	size_t vidas = 0;
 	int dormir = 0;
   
@@ -69,7 +69,8 @@ int main(){
   float px = 0, py = 0;
   double angulo = 0;
   int eje_x = 0, eje_y = 0;
-  float tracker;
+  float dt_tracker;
+  unsigned long nave_tracker = 0;
 
 	// END código de Male y Agus
 
@@ -86,13 +87,13 @@ int main(){
 
         switch(event.key.keysym.sym){
 					case SDLK_UP:
-            if(!press_start && tracker > 1)
+            if(!press_start && dt_tracker > 1)
               nave_potencia_incrementar(nave);
 
             break;
 
 					case SDLK_SPACE:
-            if (!press_start && tracker > 1) {
+            if (!press_start && dt_tracker > 1){
               px = nave_px(nave);
               py = nave_py(nave);
               angulo = nave_angulo(nave);
@@ -114,13 +115,13 @@ int main(){
               break;
             
 					case SDLK_LEFT:
-            if(!press_start && tracker > 1)
+            if(!press_start && dt_tracker > 1)
               nave_rotar_izquierda(nave);
 
             break;
 
 					case SDLK_RIGHT:
-            if(!press_start)
+            if(!press_start && dt_tracker)
               nave_rotar_derecha(nave);
 
             break;
@@ -139,14 +140,14 @@ int main(){
 		// BEGIN código de Male y Agus
     
     if(press_start) {
-      tracker = 1;
+      dt_tracker = 1;
       if(first_game) 
-        dibujo_mensajes_inicio_juego(renderer);
+        dibujar_mensajes_inicio_juego(renderer);
       else {
         if(score > high_score)
           high_score = score;
         
-        dibujo_mensajes_fin_juego(score, high_score, renderer);
+        dibujar_mensajes_fin_partida(score, high_score, renderer);
       }
         
       if(event.key.keysym.sym == SDLK_SPACE) {
@@ -154,6 +155,7 @@ int main(){
         vidas = NAVE_VIDAS_INICIALES;
         score = 0;
         nasteroides = 0;
+        nave_tracker = 0;
 
         for(size_t i = 0; i < ASTEROIDES_INICIALES; i++){                             
           ast_t *ast = asteroide_crear();
@@ -174,15 +176,18 @@ int main(){
       }
     }
     else {
-      if(tracker >= 1 && nave_dibujada) {
+      if(dt_tracker >= 1 && nave_tracker == 0) {
         nave_dibujar(nave);
         nave_mover(nave, DT);
       }
-      
-      tracker += DT;
+      else
+        ship_state = false;
+        
+      dt_tracker += DT;
+      nave_tracker = 0;
       
       nave_vidas_dibujar(vidas);
-      dibujo_mensajes_en_juego(score, high_score, renderer);
+      dibujar_mensajes_en_juego(score, high_score, renderer);
 
       // Iterador para disparos
 
@@ -292,27 +297,30 @@ int main(){
       
         px = nave_px(nave);
         py = nave_py(nave);
-      
-        if(asteroide_colisiona(ast_actual, px, py) && tracker >= 1){
-          if(nave_dibujada) {
+        
+        if(asteroide_colisiona(ast_actual, px, py)){
+          if(ship_state){
             iterador_eliminar(ast_li);
             nave_inicializar(nave);
             vidas--;
-            tracker = 0;
-            nave_dibujada = false;
+            dt_tracker = 0;
+            ship_state = false;
         
             break;
           }
+          
+          nave_tracker++;
         }
-        else
-          nave_dibujada = true;
       }
 
       iterador_destruir(ast_li);
 
+      if(nave_tracker == 0)
+        ship_state = true;
+        
       if(lista_es_vacia(asteroides)){
         asteroides = lista_crear();
-        nasteroides += 2;
+        nasteroides += ASTEROIDES_NUEVOS;
 
         for(size_t i = 0; i < (ASTEROIDES_INICIALES + nasteroides); i++){
           ast_t *ast = asteroide_crear();
@@ -341,7 +349,7 @@ int main(){
   
     // END código de Male y Agus
 
-    dibujo_fiuba_inc(renderer);
+    dibujar_fiuba_inc(renderer);
     
     SDL_RenderPresent(renderer);
 		ticks = SDL_GetTicks() - ticks;

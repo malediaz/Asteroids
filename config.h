@@ -13,6 +13,8 @@
 #define DISPARO_VIDA 0.7
 
 #define ASTEROIDES_INICIALES 4
+#define ASTEROIDES_NUEVOS 2
+
 #define ROCK_MAX_R 32
 #define ROCK_MIN_R (ROCK_MAX_R / 4)
 
@@ -27,7 +29,5 @@
 #define NAVE_ESCALA 1
 #define NAVE_VIDAS_INICIALES 4
 
-#define TIEMPO_NAVE_INICIO 1000 
-#define ASTEROIDES_NUEVOS 2
 
 #endif // _CONFIG_H_

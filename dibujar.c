@@ -8,7 +8,7 @@
 #include "config.h"
 #include "caracteres.h"
 
-static void dibujo_cadena(char cad[], float f, float cx, float cy, SDL_Renderer *renderer){
+static void dibujar_cadena(char cad[], float f, float cx, float cy, SDL_Renderer *renderer){
   for(size_t j = 0; cad[j]; j++){
     if(cad[j] != '-'){
       matrizc_t car = caracter_a_matriz(cad[j]);
@@ -28,32 +28,32 @@ static void dibujo_cadena(char cad[], float f, float cx, float cy, SDL_Renderer 
   }
 }
 
-static void dibujo_num(int num, int escala, float cx, float cy, SDL_Renderer *renderer){
+static void dibujar_num(int num, int escala, float cx, float cy, SDL_Renderer *renderer){
   char cad[12];
   sprintf(cad, "%03d", num);
 
-  dibujo_cadena(cad, escala, cx, cy, renderer);
+  dibujar_cadena(cad, escala, cx, cy, renderer);
 }
 
-void dibujo_mensajes_inicio_juego(SDL_Renderer *renderer) {
-  dibujo_cadena("ASTEROIDS", 11, 210, 350, renderer);
-  dibujo_cadena("PRESS SPACE TO START GAME", 3, 260, 550, renderer);
+void dibujar_mensajes_inicio_juego(SDL_Renderer *renderer) {
+  dibujar_cadena("ASTEROIDS", 11, 210, 350, renderer);
+  dibujar_cadena("PRESS SPACE TO START GAME", 3, 260, 550, renderer);
 }
 
-void dibujo_mensajes_fin_juego(unsigned int score, unsigned int high_score, SDL_Renderer *renderer) {
-  dibujo_cadena("GAME OVER", 10, 230, 350, renderer);
-  dibujo_cadena("SCORE ", 4, 380, 400, renderer);
-  dibujo_cadena("HIGH SCORE ", 2.5, 380, 430, renderer);
-  dibujo_num(score, 4, 530, 400 , renderer);
-  dibujo_num(high_score, 3, 550, 430 , renderer);
-  dibujo_cadena("PRESS SPACE TO START A NEW GAME", 3, 210, 550, renderer);
+void dibujar_mensajes_fin_partida(unsigned int score, unsigned int high_score, SDL_Renderer *renderer) {
+  dibujar_cadena("GAME OVER", 10, 230, 350, renderer);
+  dibujar_cadena("SCORE ", 4, 380, 400, renderer);
+  dibujar_cadena("HIGH SCORE ", 2.5, 380, 430, renderer);
+  dibujar_num(score, 4, 530, 400 , renderer);
+  dibujar_num(high_score, 3, 550, 430 , renderer);
+  dibujar_cadena("PRESS SPACE TO START A NEW GAME", 3, 210, 550, renderer);
 }
 
-void dibujo_mensajes_en_juego(unsigned int score, unsigned int high_score, SDL_Renderer *renderer) {
-  dibujo_num(high_score, 2, VENTANA_ANCHO / 2 - 25, 50, renderer);
-  dibujo_num(score, 4, 180, 60, renderer);
+void dibujar_mensajes_en_juego(unsigned int score, unsigned int high_score, SDL_Renderer *renderer) {
+  dibujar_num(high_score, 2, VENTANA_ANCHO / 2 - 25, 50, renderer);
+  dibujar_num(score, 4, 180, 60, renderer);
 }
 
-void dibujo_fiuba_inc(SDL_Renderer *renderer) {
-  dibujo_cadena("2019 FIUBA INC", 2, VENTANA_ANCHO / 2 - VENTANA_ANCHO / 10, 650, renderer);
+void dibujar_fiuba_inc(SDL_Renderer *renderer) {
+  dibujar_cadena("2019 FIUBA INC", 2, VENTANA_ANCHO / 2 - VENTANA_ANCHO / 10, 650, renderer);
 }

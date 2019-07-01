@@ -8,6 +8,7 @@
 #include "disparos.h"
 #include "graficador.h"
 
+
 struct disparo{
   float px;
   float py;
@@ -47,7 +48,7 @@ bool disparo_mover(disparo_t *disp, float dt){
   return true;
 }
 
-int disparo_vida(disparo_t *disp) {
+float disparo_vida(disparo_t *disp) {
   return disp->vida;
 }
 

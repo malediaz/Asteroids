@@ -3,6 +3,7 @@
 
 typedef struct asteroide ast_t;
 
+
 /* Crea una asteroide y lo devuelve por nombre */
 ast_t *asteroide_crear();
 
