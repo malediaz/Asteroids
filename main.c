@@ -9,8 +9,8 @@
 #include "disparos.h"
 #include "asteroides.h"
 #include "dibujar.h"
-#include "iterador.h"
 #include "lista.h"
+#include "iterador.h"
 
 int main(){
 	SDL_Init(SDL_INIT_VIDEO);
@@ -139,7 +139,7 @@ int main(){
 
 		// BEGIN código de Male y Agus
     
-    if(press_start) {
+    if(press_start){
       dt_tracker = 1;
       if(first_game) 
         dibujar_mensajes_inicio_juego(renderer);
@@ -150,7 +150,7 @@ int main(){
         dibujar_mensajes_fin_partida(score, high_score, renderer);
       }
         
-      if(event.key.keysym.sym == SDLK_SPACE) {
+      if(event.key.keysym.sym == SDLK_SPACE){
         press_start = false;
         vidas = NAVE_VIDAS_INICIALES;
         score = 0;
@@ -176,7 +176,7 @@ int main(){
       }
     }
     else {
-      if(dt_tracker >= 1 && nave_tracker == 0) {
+      if(dt_tracker >= 1 && nave_tracker == 0){
         nave_dibujar(nave);
         nave_mover(nave, DT);
       }
@@ -236,7 +236,7 @@ int main(){
             return EXIT_FAILURE;
           }
 
-          for ( ; !iterador_termino(disp_li); iterador_siguiente(disp_li)){
+          for( ; !iterador_termino(disp_li); iterador_siguiente(disp_li)){
             disparo_t *disp_actual = iterador_actual(disp_li);
 
             px = disparo_px(disp_actual);
@@ -340,7 +340,7 @@ int main(){
       
 		//Finalizacion de la partida
     
-      if(vidas == 0) {
+      if(vidas == 0){
         lista_destruir(asteroides, free);
         asteroides = lista_crear();
         press_start = true;
@@ -353,7 +353,7 @@ int main(){
     
     SDL_RenderPresent(renderer);
 		ticks = SDL_GetTicks() - ticks;
-		if(dormir) {
+		if(dormir){
 			SDL_Delay(dormir);
 			dormir = 0;
     }

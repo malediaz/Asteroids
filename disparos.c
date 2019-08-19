@@ -9,7 +9,7 @@
 #include "graficador.h"
 
 
-struct disparo{
+struct disparo {
   float px;
   float py;
   float vx;
@@ -19,7 +19,7 @@ struct disparo{
   float vida;
 };
 
-disparo_t *disparo_crear() {
+disparo_t *disparo_crear(){
   disparo_t *disp = malloc(sizeof(disparo_t));
   if (disp == NULL)
     return NULL;
@@ -27,7 +27,7 @@ disparo_t *disparo_crear() {
   return disp;
 }
 
-void disparo_inicializar(disparo_t *disp, float px, float py, double angulo) {
+void disparo_inicializar(disparo_t *disp, float px, float py, double angulo){
   disp->px = px;
   disp->py = py;
   disp->vx = DISPARO_VELOCIDAD * cos(angulo);
@@ -48,23 +48,23 @@ bool disparo_mover(disparo_t *disp, float dt){
   return true;
 }
 
-float disparo_vida(disparo_t *disp) {
+float disparo_vida(disparo_t *disp){
   return disp->vida;
 }
 
-float disparo_px(disparo_t *disp) {
+float disparo_px(disparo_t *disp){
   return disp->px;
 }
 
-float disparo_py(disparo_t *disp) {
+float disparo_py(disparo_t *disp){
   return disp->py;
 }
 
-float disparo_angulo(disparo_t *disp) {
+float disparo_angulo(disparo_t *disp){
   return disp->angulo;
 }
 
-bool disparo_dibujar(disparo_t *disp) {
+bool disparo_dibujar(disparo_t *disp){
   return graficador_dibujar("SHOT", disp->escala, disp->px, disp->py, disp->angulo);
 }
 

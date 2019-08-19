@@ -1,8 +1,6 @@
 #ifndef _DISPAROS_H_
 #define _DISPAROS_H_
 
-#include "lista.h"
-
 typedef struct disparo disparo_t;
 
 
